@@ -1,0 +1,4 @@
+System -> The entire system running the game, display, AI, etc.
+User -> A human player of the Blokus game
+Computer -> An artificial player of the Blokus game
+Player -> Any agent playing the Blokus game.
