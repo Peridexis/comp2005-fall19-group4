@@ -26,7 +26,7 @@ public class BlokusGUI {
 		    JPanel panel2 = new JPanel();
 		    window.add(panel1, BorderLayout.NORTH);
 		    window.add(panel2, BorderLayout.WEST);
-		    JButton button = new JButton("instruction");
+		    JButton button = new JButton("Instructions");
 		    panel2.add(button, BorderLayout.NORTH);
 //			setVisible(true);
 			window.setBackground(Color.gray);
