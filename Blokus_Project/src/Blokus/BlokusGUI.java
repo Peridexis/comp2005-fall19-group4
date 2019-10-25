@@ -15,6 +15,8 @@ public class BlokusGUI {
 		private BlokusBoard board;
 		private BlokusPlayer[] players;
 		private JButton instruction;
+		private JButton colorblindButton;
+		public boolean colorblind;
 		
 		public Blokus_Frame() {
 			JFrame window = new JFrame("Blokus");
@@ -30,14 +32,19 @@ public class BlokusGUI {
 			titlePanel.add(titleLabel);
 			window.add(titlePanel, BorderLayout.NORTH);
 
-			JPanel menuPanel = new JPanel();
 			instruction = new JButton("Instructions");
-			instruction.addActionListener(new ButtonClickListener());
-			menuPanel.add(instruction, BorderLayout.NORTH);
+			instruction.addActionListener(new InstructionButtonListener());
+			colorblindButton = new JButton("Colorblind: Off");
+			colorblindButton.addActionListener(new ColorblindButtonListener());
+			colorblind = false;
+
+			JPanel menuPanel = new JPanel();
+			menuPanel.add(instruction, BorderLayout.EAST);
+			menuPanel.add(colorblindButton, BorderLayout.EAST);
 			window.add(menuPanel, BorderLayout.WEST);
 		}
 		
-	class ButtonClickListener implements ActionListener {
+	class InstructionButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			JOptionPane.showMessageDialog(null, 
@@ -51,6 +58,17 @@ public class BlokusGUI {
 				"\"Score calculated by remaining pieces in players hands.\"\n" +
 				"\"The player with the highest score wins!\""
 			);
+		}
+	}
+
+	class ColorblindButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent evnt) {
+			colorblind = !colorblind;
+			if (colorblind) {
+				colorblindButton.setText("Colorblind: On");
+			} else {
+				colorblindButton.setText("Colorblind: Off");
+			}
 		}
 	}
 		
