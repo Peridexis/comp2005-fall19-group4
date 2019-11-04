@@ -189,7 +189,7 @@ public class BlokusGUI {
 				{
 					gameMenu.newGame();
 
-					getTopLevelAncestor().setSize(750, 950);
+					getTopLevelAncestor().setSize(1000, 1000);
 					gameMenu.setVisible(true);
 					playMenu.setVisible(false);
 				}
@@ -301,22 +301,21 @@ public class BlokusGUI {
 			private Game game = new Game();
 			private JPanel boardPanel = new JPanel();
 			private Tile[][] board;
-			private int boardWidth = 500;
-			private int boardHeight = 500;
+			private int boardWidth = 400;
+			private int boardHeight = 400;
 
 			public GameMenu()
 			{
 				super();
 
+				// Begin setting up board
 				board = new Tile[game.width][game.height];
 				boardPanel.setLayout(new GridLayout(game.width, game.height));
 				GridBagConstraints c;
 				
 				c = new GridBagConstraints();
-				// c.gridx = c.gridy = 0;
-				// c.weightx = c.weighty = 0.3;
-				// c.gridwidth = c.gridheight = 3;
-				// c.fill = GridBagConstraints.BOTH;
+				c.gridx = c.gridy = 1;
+				c.weightx = c.weighty = 0.2;
 				add(boardPanel, c);
 
 				int w = boardWidth / game.width;
@@ -334,6 +333,50 @@ public class BlokusGUI {
 				}
 
 				refreshBoard();
+				// Finished setting up board
+
+				Dimension hdim = new Dimension((int) (boardWidth*0.7), (int) (boardHeight*0.7) / 2);
+				Dimension fullhdim = new Dimension(boardWidth, boardHeight / 2);
+				Dimension vdim = new Dimension((int) (boardWidth*0.7) / 2, (int) (boardHeight*0.7));
+
+				// Set up active player block pool display
+				JPanel activePanel = new JPanel();
+				activePanel.setPreferredSize(fullhdim);
+				activePanel.setBackground(Color.BLUE);
+				c = new GridBagConstraints();
+				c.gridx = 1;
+				c.gridy = 2;
+				c.weightx = c.weighty = 0.2;
+				add(activePanel, c);
+				
+				// Begin setting up opponent block pool displays
+				JPanel opPanel1 = new JPanel();
+				opPanel1.setPreferredSize(vdim);
+				opPanel1.setBackground(Color.BLUE);
+				c = new GridBagConstraints();
+				c.gridx = 0;
+				c.gridy = 1;
+				c.weightx = c.weighty = 0.2;
+				add(opPanel1, c);
+				
+				JPanel opPanel2 = new JPanel();
+				opPanel2.setPreferredSize(hdim);
+				opPanel2.setBackground(Color.BLUE);
+				c = new GridBagConstraints();
+				c.gridx = 1;
+				c.gridy = 0;
+				c.weightx = c.weighty = 0.2;
+				add(opPanel2, c);
+				
+				JPanel opPanel3 = new JPanel();
+				opPanel3.setPreferredSize(vdim);
+				opPanel3.setBackground(Color.BLUE);
+				c = new GridBagConstraints();
+				c.gridx = 2;
+				c.gridy = 1;
+				c.weightx = c.weighty = 0.2;
+				add(opPanel3, c);
+				// Finished setting up opponent block pool displays
 			}
 
 			public void newGame()
