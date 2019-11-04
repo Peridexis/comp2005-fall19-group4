@@ -25,7 +25,8 @@ public class BlokusGUI {
 		static final JPanel menuPanel = new JPanel(); // Holds menus including (mainMenu, settingsMenu , playMenu)
 		static final MainMenu mainMenu = new MainMenu(); // creates only one of these  and reuses it 
 		static final SettingsMenu settingsMenu = new SettingsMenu(); // creates only one of these  and reuses it 
-		static  final  PlayMenu playMenu = new PlayMenu(); // creates only one of these  and reuses it 
+		static final PlayMenu playMenu = new PlayMenu(); // creates only one of these  and reuses it 
+		static final GameMenu gameMenu = new GameMenu(); // creates only one of these  and reuses it 
 		public Blokus_Frame() //sets standard parameters for the window
 		{
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
@@ -33,13 +34,14 @@ public class BlokusGUI {
 			this.setLayout(new BorderLayout());
 			this.setResizable(true);
 			
-			JLabel authorInfo = new JLabel("Group # 4 - Comp 2005, 2019  ",SwingConstants.RIGHT);
+			JLabel authorInfo = new JLabel("Group # 4 - Comp 2005, 2019  ", SwingConstants.RIGHT);
 			this.add(authorInfo, BorderLayout.PAGE_END);
 
 			menuPanel.setLayout(new CardLayout());
 			menuPanel.add(mainMenu);
 			menuPanel.add(settingsMenu);
 			menuPanel.add(playMenu);
+			menuPanel.add(gameMenu);
 
 			this.add(menuPanel, BorderLayout.CENTER);
 			this.setVisible(true);	
@@ -79,9 +81,9 @@ public class BlokusGUI {
 				quitButton.addActionListener(new QuitButtonListener());
 
 
-				ImageIcon image =new ImageIcon("images/BlokusIcon.png");
+				ImageIcon image = new ImageIcon("images/BlokusIcon.png");
 				Image resized = image.getImage().getScaledInstance(500, 256, Image.SCALE_SMOOTH);
-				image =new ImageIcon(resized);
+				image = new ImageIcon(resized);
 				
 				
 				
@@ -185,7 +187,11 @@ public class BlokusGUI {
 			{
 				public void actionPerformed(ActionEvent event) 
 				{
-					//TODO: new game menu 
+					gameMenu.newGame();
+
+					getTopLevelAncestor().setSize(750, 950);
+					gameMenu.setVisible(true);
+					playMenu.setVisible(false);
 				}
 			}
 		
@@ -209,14 +215,7 @@ public class BlokusGUI {
 					frame.setVisible(true);				
 				}
 			}
-		
-		
-		
-		
-		
-		
 		}
-		
 		
 		private static class SettingsMenu extends Menu
 		{
@@ -291,6 +290,92 @@ public class BlokusGUI {
 					frame.setVisible(true);
 				}
 			}		
+		}
+		
+		private static class GameMenu extends Menu
+		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -7887556954455476971L;
+			private Game game = new Game();
+			private JPanel boardPanel = new JPanel();
+			private Tile[][] board;
+			private int boardWidth = 500;
+			private int boardHeight = 500;
+
+			public GameMenu()
+			{
+				super();
+
+				board = new Tile[game.width][game.height];
+				boardPanel.setLayout(new GridLayout(game.width, game.height));
+				GridBagConstraints c;
+				
+				c = new GridBagConstraints();
+				// c.gridx = c.gridy = 0;
+				// c.weightx = c.weighty = 0.3;
+				// c.gridwidth = c.gridheight = 3;
+				// c.fill = GridBagConstraints.BOTH;
+				add(boardPanel, c);
+
+				int w = boardWidth / game.width;
+				int h = boardHeight / game.height;
+				Tile tile;
+
+				for (int y = 0; y < game.height; y++)
+				{
+					for (int x = 0; x < game.width; x++)
+					{
+						tile = new Tile(w, h, Game.NOCOLOR);
+						boardPanel.add(tile);
+						board[x][y] = tile;
+					}
+				}
+
+				refreshBoard();
+			}
+
+			public void newGame()
+			{
+				setGame(new Game());
+			}
+
+			public void setGame(Game game)
+			{
+				this.game = game;
+			}
+
+			public void refreshBoard()
+			{
+				for (int y = 0; y < game.height; y++)
+				{
+					for (int x = 0; x < game.width; x++)
+					{
+						switch (game.getStateAt(x, y))
+						{
+							case Game.PLAYER1: board[x][y].setBackground(Game.P1COLOR); break;
+							case Game.PLAYER2: board[x][y].setBackground(Game.P2COLOR); break;
+							case Game.PLAYER3: board[x][y].setBackground(Game.P3COLOR); break;
+							case Game.PLAYER4: board[x][y].setBackground(Game.P4COLOR); break;
+							default: board[x][y].setBackground(Game.NOCOLOR);
+						}
+					}
+				}
+			}
+
+			private class Tile extends JPanel
+			{
+				private static final long serialVersionUID = 1092357066461006241L;
+
+				public Tile(int width, int height, Color color)
+				{
+					setSize(width, height);
+					setPreferredSize(new Dimension(width, height));
+					setBackground(color);
+					setBorder(BorderFactory.createLoweredBevelBorder());
+				}
+			}
 		}
 	}				
 	
