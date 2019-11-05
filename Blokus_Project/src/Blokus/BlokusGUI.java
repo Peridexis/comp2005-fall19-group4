@@ -340,9 +340,10 @@ public class BlokusGUI {
 				Dimension vdim = new Dimension((int) (boardWidth*0.7) / 2, (int) (boardHeight*0.7));
 
 				// Set up active player block pool display
-				JPanel activePanel = new JPanel();
-				activePanel.setPreferredSize(fullhdim);
-				activePanel.setBackground(Color.BLUE);
+				// JPanel activePanel = new JPanel();
+				// activePanel.setPreferredSize(fullhdim);
+				// activePanel.setBackground(Color.BLUE);
+				BlockInventory activePanel = new BlockInventory(Color.BLUE, boardWidth);
 				c = new GridBagConstraints();
 				c.gridx = 1;
 				c.gridy = 2;
