@@ -340,9 +340,6 @@ public class BlokusGUI {
 				Dimension vdim = new Dimension((int) (boardWidth*0.7) / 2, (int) (boardHeight*0.7));
 
 				// Set up active player block pool display
-				// JPanel activePanel = new JPanel();
-				// activePanel.setPreferredSize(fullhdim);
-				// activePanel.setBackground(Color.BLUE);
 				BlockInventory activePanel = new BlockInventory(Color.BLUE, boardWidth);
 				c = new GridBagConstraints();
 				c.gridx = 1;
@@ -351,27 +348,21 @@ public class BlokusGUI {
 				add(activePanel, c);
 				
 				// Begin setting up opponent block pool displays
-				JPanel opPanel1 = new JPanel();
-				opPanel1.setPreferredSize(vdim);
-				opPanel1.setBackground(Color.BLUE);
+				BlockInventory opPanel1 = new BlockInventory(Color.RED, (int) (boardWidth*0.7), 3);
 				c = new GridBagConstraints();
 				c.gridx = 0;
 				c.gridy = 1;
 				c.weightx = c.weighty = 0.2;
 				add(opPanel1, c);
-				
-				JPanel opPanel2 = new JPanel();
-				opPanel2.setPreferredSize(hdim);
-				opPanel2.setBackground(Color.BLUE);
+
+				BlockInventory opPanel2 = new BlockInventory(Color.GREEN, (int) (boardWidth*0.7), 2);
 				c = new GridBagConstraints();
 				c.gridx = 1;
 				c.gridy = 0;
 				c.weightx = c.weighty = 0.2;
 				add(opPanel2, c);
-				
-				JPanel opPanel3 = new JPanel();
-				opPanel3.setPreferredSize(vdim);
-				opPanel3.setBackground(Color.BLUE);
+
+				BlockInventory opPanel3 = new BlockInventory(Color.YELLOW, (int) (boardWidth*0.7), 1);
 				c = new GridBagConstraints();
 				c.gridx = 2;
 				c.gridy = 1;

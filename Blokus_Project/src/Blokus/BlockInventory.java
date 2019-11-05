@@ -28,9 +28,11 @@ public class BlockInventory extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	private static final int defaultSize = 500;
-	private static final int width = 14;
-	private static final int height = 7;
-	private static final Polyomino[][] layout =
+
+	private int width = 14;
+	private int height = 7;
+	private Polyomino[] hidden = new Polyomino[21];
+	private Polyomino[][] layout =
 	{
 		{ Polyomino.L5, Polyomino.L5, Polyomino.L5, Polyomino.L5, Polyomino.V5, Polyomino.V5, Polyomino.V5 },
 		{ Polyomino.P5, Polyomino.P5, Polyomino.O0, Polyomino.L5, Polyomino.T4, Polyomino.O0, Polyomino.V5 },
@@ -48,24 +50,35 @@ public class BlockInventory extends JPanel
 		{ Polyomino.I5, Polyomino.U5, Polyomino.U5, Polyomino.U5, Polyomino.Z5, Polyomino.Z5, Polyomino.Z4 }
 	};
 
-	private Polyomino[] hidden = new Polyomino[21];
-
-	public BlockInventory(Color color, int longEdgeSize)
+	public BlockInventory(Color playerColor, int longEdgeSize, int quarterTurns)
 	{
+		for (int i = quarterTurns; i > 0; i--)
+		{
+			Polyomino[][] result = new Polyomino[height][width];
+			for (int x = 0; x < width; x++) {
+				for (int y = 0; y < height; y++) {
+					result[y][width-1-x] = layout[x][y];
+				}
+			}
+
+			layout = result;
+			int temp = width;
+			width = height;
+			height = temp;
+		}
+
 		setLayout(new GridBagLayout());
+		setBackground(Game.NOCOLOR);
 
 		GridBagConstraints c;
-		boolean isOccupied;
-		Color blockColor;
-		Color transparent = new Color(0, 0, 0, 0);
-		int blockSize = longEdgeSize / width;
+		Color color;
+		Color background = Game.NOCOLOR;
+		int blockSize = longEdgeSize / (quarterTurns % 2 == 0 ? width : height);
+
 		for (int x = 0; x < width; x++)
 		{
 			for (int y = 0; y < height; y++)
 			{
-				isOccupied = layout[x][y] != Polyomino.O0;
-				blockColor = isOccupied ? color : transparent;
-
 				int[] edges = {1, 1, 1, 1};
 
 				if (y != 0        && layout[x][y] == layout[x][y-1]) { edges[0] = 0; }
@@ -76,16 +89,18 @@ public class BlockInventory extends JPanel
 				c = new GridBagConstraints();
 				c.gridx = x;
 				c.gridy = y;
-				c.weightx = c.weighty = 0.8;
 
-				add(new Block(blockColor, blockSize, edges), c);
+				color = layout[x][y] != Polyomino.O0 ? playerColor : background;
+
+				add(new Block(color, blockSize, edges), c);
 			}
 		}
 	}
 
-	public BlockInventory(int longEdgeSize) { this(Game.NOCOLOR, longEdgeSize); }
-	public BlockInventory(Color color) { this(color, defaultSize); }
-	public BlockInventory() { this(Game.NOCOLOR, defaultSize); }
+	public BlockInventory(Color color, int longEdgeSize) { this(color, longEdgeSize, 0); }
+	public BlockInventory(int longEdgeSize) { this(Game.NOCOLOR, longEdgeSize, 0); }
+	public BlockInventory(Color color) { this(color, defaultSize, 0); }
+	public BlockInventory() { this(Game.NOCOLOR, defaultSize, 0); }
 
 	private class Block extends JPanel
 	{
