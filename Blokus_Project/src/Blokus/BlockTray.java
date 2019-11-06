@@ -28,11 +28,7 @@ public class BlockTray extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	private static final int defaultSize = 500;
-
-	private int width = 14;
-	private int height = 7;
-	private Polyomino[] hidden = new Polyomino[21];
-	private Polyomino[][] layout =
+	private Polyomino[][] defaultLayout =
 	{
 		{ Polyomino.L5, Polyomino.L5, Polyomino.L5, Polyomino.L5, Polyomino.V5, Polyomino.V5, Polyomino.V5 },
 		{ Polyomino.P5, Polyomino.P5, Polyomino.O0, Polyomino.L5, Polyomino.T4, Polyomino.O0, Polyomino.V5 },
@@ -50,10 +46,17 @@ public class BlockTray extends JPanel
 		{ Polyomino.I5, Polyomino.U5, Polyomino.U5, Polyomino.U5, Polyomino.Z5, Polyomino.Z5, Polyomino.Z4 }
 	};
 
-	public BlockTray(Color playerColor, int longEdgeSize, int quarterTurns)
+	private int width = 14;
+	private int height = 7;
+	private Block[][] blocks;
+
+	public BlockTray(BlockInventory inventory, int longEdgeSize, int quarterTurns)
 	{
+		// Create a temp copy of the default layout, so it can be rotated without issue
+		Polyomino[][] layout = defaultLayout;
 		for (int i = quarterTurns; i > 0; i--)
 		{
+			// Rotate the layout 90 degrees `quarterTurns` times
 			Polyomino[][] result = new Polyomino[height][width];
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
@@ -61,6 +64,7 @@ public class BlockTray extends JPanel
 				}
 			}
 
+			// Set the new layout and swap width/height
 			layout = result;
 			int temp = width;
 			width = height;
@@ -68,54 +72,73 @@ public class BlockTray extends JPanel
 		}
 
 		setLayout(new GridBagLayout());
-		setBackground(Game.NOCOLOR);
 
+		// Define some variables for the loop to create the Blocks
 		GridBagConstraints c;
-		Color color;
-		Color background = Game.NOCOLOR;
+		Color color = inventory.color, background = Game.NOCOLOR, blockColor;
+		Block block;
 		int blockSize = longEdgeSize / (quarterTurns % 2 == 0 ? width : height);
+		blocks = new Block[width][height];
+		int[] edges = new int[4];
+		Polyomino poly;
 
+		// Create a Block for each space in the layout, and put it on the tray
 		for (int x = 0; x < width; x++)
 		{
 			for (int y = 0; y < height; y++)
 			{
-				int[] edges = {1, 1, 1, 1};
+				// Get the type of polyomino at that grid location
+				poly = layout[x][y];
 
-				if (y != 0        && layout[x][y] == layout[x][y-1]) { edges[0] = 0; }
-				if (x != 0        && layout[x][y] == layout[x-1][y]) { edges[1] = 0; }
-				if (y != height-1 && layout[x][y] == layout[x][y+1]) { edges[2] = 0; }
-				if (x != width-1  && layout[x][y] == layout[x+1][y]) { edges[3] = 0; }
+				// Check each direction. If it's not OOB, and it shares a polyomino type, 
+				// then don't put a border between the two blocks. Otherwise, do.
+				edges[0] = (y != 0        && poly == layout[x][y-1]) ? 0 : 1;
+				edges[1] = (x != 0        && poly == layout[x-1][y]) ? 0 : 1;
+				edges[2] = (y != height-1 && poly == layout[x][y+1]) ? 0 : 1;
+				edges[3] = (x != width-1  && poly == layout[x+1][y]) ? 0 : 1;
 
+				// Create the gridbagconstraints
 				c = new GridBagConstraints();
 				c.gridx = x;
 				c.gridy = y;
 
-				color = layout[x][y] != Polyomino.O0 ? playerColor : background;
+				// Set the color. Any empty tile will be background colored, but will 
+				// still be there (primarily for structure)
+				blockColor = poly != Polyomino.O0 ? color : background;
 
-				add(new Block(color, blockSize, edges), c);
+				block = new Block(blockColor, blockSize, edges, poly);
+				blocks[x][y] = block;
+				add(block, c);
 			}
 		}
 	}
 
-	public BlockTray(Color color, int longEdgeSize) { this(color, longEdgeSize, 0); }
-	public BlockTray(int longEdgeSize) { this(Game.NOCOLOR, longEdgeSize, 0); }
-	public BlockTray(Color color) { this(color, defaultSize, 0); }
-	public BlockTray() { this(Game.NOCOLOR, defaultSize, 0); }
+	public BlockTray(BlockInventory inventory, int longEdgeSize) { this(inventory, longEdgeSize, 0); }
+	public BlockTray(BlockInventory inventory) { this(inventory, defaultSize, 0); }
 
 	private class Block extends JPanel
 	{
 		private static final long serialVersionUID = 1L;
-		public Block(Color color, int size, int[] edges)
+		private int u, l, d, r;
+		private Polyomino poly;
+
+		public Block(Color color, int size, int[] edges, Polyomino poly)
 		{
 			setSize(size, size);
 			setPreferredSize(new Dimension(size, size));
+
+			u = edges[0];
+			l = edges[1];
+			d = edges[2];
+			r = edges[3];
+			this.poly = poly;
+
+			setColor(color);
+		}
+
+		public void setColor(Color color)
+		{
 			setBackground(color);
-
-			int u = edges[0];
-			int l = edges[1];
-			int d = edges[2];
-			int r = edges[3];
-
 			setBorder(BorderFactory.createMatteBorder(u, l, d, r, color.darker()));
 		}
 	}

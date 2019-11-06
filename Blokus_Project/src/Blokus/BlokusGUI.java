@@ -336,7 +336,7 @@ public class BlokusGUI {
 				// Finished setting up board
 
 				// Set up active player block pool display
-				BlockTray activePanel = new BlockTray(Color.BLUE, boardWidth);
+				BlockTray activePanel = new BlockTray(new BlockInventory(Color.BLUE), boardWidth);
 				c = new GridBagConstraints();
 				c.gridx = 1;
 				c.gridy = 2;
@@ -344,21 +344,21 @@ public class BlokusGUI {
 				add(activePanel, c);
 				
 				// Begin setting up opponent block pool displays
-				BlockTray opPanel1 = new BlockTray(Color.RED, (int) (boardWidth*0.7), 3);
+				BlockTray opPanel1 = new BlockTray(new BlockInventory(Color.RED), (int) (boardWidth*0.7), 3);
 				c = new GridBagConstraints();
 				c.gridx = 0;
 				c.gridy = 1;
 				c.weightx = c.weighty = 0.2;
 				add(opPanel1, c);
 
-				BlockTray opPanel2 = new BlockTray(Color.GREEN, (int) (boardWidth*0.7), 2);
+				BlockTray opPanel2 = new BlockTray(new BlockInventory(Color.YELLOW), (int) (boardWidth*0.7), 2);
 				c = new GridBagConstraints();
 				c.gridx = 1;
 				c.gridy = 0;
 				c.weightx = c.weighty = 0.2;
 				add(opPanel2, c);
 
-				BlockTray opPanel3 = new BlockTray(Color.YELLOW, (int) (boardWidth*0.7), 1);
+				BlockTray opPanel3 = new BlockTray(new BlockInventory(Color.GREEN), (int) (boardWidth*0.7), 1);
 				c = new GridBagConstraints();
 				c.gridx = 2;
 				c.gridy = 1;
