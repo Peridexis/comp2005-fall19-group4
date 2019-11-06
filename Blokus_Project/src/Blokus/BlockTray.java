@@ -24,7 +24,7 @@ enum Polyomino
 }
 
 
-public class BlockInventory extends JPanel
+public class BlockTray extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	private static final int defaultSize = 500;
@@ -50,7 +50,7 @@ public class BlockInventory extends JPanel
 		{ Polyomino.I5, Polyomino.U5, Polyomino.U5, Polyomino.U5, Polyomino.Z5, Polyomino.Z5, Polyomino.Z4 }
 	};
 
-	public BlockInventory(Color playerColor, int longEdgeSize, int quarterTurns)
+	public BlockTray(Color playerColor, int longEdgeSize, int quarterTurns)
 	{
 		for (int i = quarterTurns; i > 0; i--)
 		{
@@ -97,10 +97,10 @@ public class BlockInventory extends JPanel
 		}
 	}
 
-	public BlockInventory(Color color, int longEdgeSize) { this(color, longEdgeSize, 0); }
-	public BlockInventory(int longEdgeSize) { this(Game.NOCOLOR, longEdgeSize, 0); }
-	public BlockInventory(Color color) { this(color, defaultSize, 0); }
-	public BlockInventory() { this(Game.NOCOLOR, defaultSize, 0); }
+	public BlockTray(Color color, int longEdgeSize) { this(color, longEdgeSize, 0); }
+	public BlockTray(int longEdgeSize) { this(Game.NOCOLOR, longEdgeSize, 0); }
+	public BlockTray(Color color) { this(color, defaultSize, 0); }
+	public BlockTray() { this(Game.NOCOLOR, defaultSize, 0); }
 
 	private class Block extends JPanel
 	{

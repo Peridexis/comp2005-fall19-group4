@@ -335,12 +335,8 @@ public class BlokusGUI {
 				refreshBoard();
 				// Finished setting up board
 
-				Dimension hdim = new Dimension((int) (boardWidth*0.7), (int) (boardHeight*0.7) / 2);
-				Dimension fullhdim = new Dimension(boardWidth, boardHeight / 2);
-				Dimension vdim = new Dimension((int) (boardWidth*0.7) / 2, (int) (boardHeight*0.7));
-
 				// Set up active player block pool display
-				BlockInventory activePanel = new BlockInventory(Color.BLUE, boardWidth);
+				BlockTray activePanel = new BlockTray(Color.BLUE, boardWidth);
 				c = new GridBagConstraints();
 				c.gridx = 1;
 				c.gridy = 2;
@@ -348,21 +344,21 @@ public class BlokusGUI {
 				add(activePanel, c);
 				
 				// Begin setting up opponent block pool displays
-				BlockInventory opPanel1 = new BlockInventory(Color.RED, (int) (boardWidth*0.7), 3);
+				BlockTray opPanel1 = new BlockTray(Color.RED, (int) (boardWidth*0.7), 3);
 				c = new GridBagConstraints();
 				c.gridx = 0;
 				c.gridy = 1;
 				c.weightx = c.weighty = 0.2;
 				add(opPanel1, c);
 
-				BlockInventory opPanel2 = new BlockInventory(Color.GREEN, (int) (boardWidth*0.7), 2);
+				BlockTray opPanel2 = new BlockTray(Color.GREEN, (int) (boardWidth*0.7), 2);
 				c = new GridBagConstraints();
 				c.gridx = 1;
 				c.gridy = 0;
 				c.weightx = c.weighty = 0.2;
 				add(opPanel2, c);
 
-				BlockInventory opPanel3 = new BlockInventory(Color.YELLOW, (int) (boardWidth*0.7), 1);
+				BlockTray opPanel3 = new BlockTray(Color.YELLOW, (int) (boardWidth*0.7), 1);
 				c = new GridBagConstraints();
 				c.gridx = 2;
 				c.gridy = 1;
