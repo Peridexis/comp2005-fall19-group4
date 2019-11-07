@@ -98,6 +98,38 @@ public class BlockTray extends JPanel
 	public BlockTray(BlockInventory inventory, int longEdgeSize) { this(inventory, longEdgeSize, 0); }
 	public BlockTray(BlockInventory inventory) { this(inventory, defaultSize, 0); }
 
+	public void setInventory(BlockInventory inventory)
+	{
+		this.inventory = inventory;
+		refresh();
+	}
+
+	public BlockInventory getInventory()
+	{
+		return inventory;
+	}
+
+	public void refresh()
+	{
+		Color playerColor = inventory.color;
+		Color backgroundColor = Game.NOCOLOR;
+		for (int x = 0; x < width; x++)
+		{
+			for (int y = 0; y < height; y++)
+			{
+				if (inventory.isAvailable(blocks[x][y].poly)
+				&&  blocks[x][y].poly != Polyomino.O0)
+				{
+					blocks[x][y].setColor(playerColor);
+				}
+				else
+				{
+					blocks[x][y].setColor(backgroundColor);
+				}
+			}
+		}
+	}
+
 	private class Block extends JPanel
 	{
 		private static final long serialVersionUID = 1L;

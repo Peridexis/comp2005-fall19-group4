@@ -300,6 +300,7 @@ public class BlokusGUI {
 			private static final long serialVersionUID = -7887556954455476971L;
 			private Game game = new Game();
 			private JPanel boardPanel = new JPanel();
+			private BlockTray mainTray, leftTray, topTray, rightTray;
 			private Tile[][] board;
 			private int boardWidth = 400;
 			private int boardHeight = 400;
@@ -336,35 +337,44 @@ public class BlokusGUI {
 				// Finished setting up board
 
 				// Set up active player block pool display
-				BlockTray activePanel = new BlockTray(new BlockInventory(Color.BLUE), boardWidth);
+				mainTray = new BlockTray(new BlockInventory(Color.BLUE), boardWidth);
 				c = new GridBagConstraints();
 				c.gridx = 1;
 				c.gridy = 2;
 				c.weightx = c.weighty = 0.2;
-				add(activePanel, c);
+				add(mainTray, c);
 				
 				// Begin setting up opponent block pool displays
-				BlockTray opPanel1 = new BlockTray(new BlockInventory(Color.RED), (int) (boardWidth*0.7), 3);
+				leftTray = new BlockTray(new BlockInventory(Color.RED), (int) (boardWidth*0.7), 3);
 				c = new GridBagConstraints();
 				c.gridx = 0;
 				c.gridy = 1;
 				c.weightx = c.weighty = 0.2;
-				add(opPanel1, c);
+				add(leftTray, c);
 
-				BlockTray opPanel2 = new BlockTray(new BlockInventory(Color.YELLOW), (int) (boardWidth*0.7), 2);
+				topTray = new BlockTray(new BlockInventory(Color.YELLOW), (int) (boardWidth*0.7), 2);
 				c = new GridBagConstraints();
 				c.gridx = 1;
 				c.gridy = 0;
 				c.weightx = c.weighty = 0.2;
-				add(opPanel2, c);
+				add(topTray, c);
 
-				BlockTray opPanel3 = new BlockTray(new BlockInventory(Color.GREEN), (int) (boardWidth*0.7), 1);
+				rightTray = new BlockTray(new BlockInventory(Color.GREEN), (int) (boardWidth*0.7), 1);
 				c = new GridBagConstraints();
 				c.gridx = 2;
 				c.gridy = 1;
 				c.weightx = c.weighty = 0.2;
-				add(opPanel3, c);
+				add(rightTray, c);
 				// Finished setting up opponent block pool displays
+
+				// Add button to cycle the inventories
+				JButton cycleButton = new JButton("Change Turn");
+				cycleButton.addActionListener(new cycleButtonListener());
+				// cycleButton.setSize()
+				c = new GridBagConstraints();
+				c.gridx = 0;
+				c.gridy = 2;
+				add(cycleButton, c);
 			}
 
 			public void newGame()
@@ -392,6 +402,23 @@ public class BlokusGUI {
 							default: board[x][y].setBackground(Game.NOCOLOR);
 						}
 					}
+				}
+			}
+
+			public void cycleTrays()
+			{
+				BlockInventory temp = mainTray.getInventory();
+				mainTray.setInventory(rightTray.getInventory());
+				rightTray.setInventory(topTray.getInventory());
+				topTray.setInventory(leftTray.getInventory());
+				leftTray.setInventory(temp);
+			}
+
+			private class cycleButtonListener implements ActionListener 
+			{
+				public void actionPerformed(ActionEvent event) 
+				{
+					cycleTrays();
 				}
 			}
 
