@@ -375,6 +375,13 @@ public class BlokusGUI {
 				c.gridx = 2;
 				c.gridy = 2;
 				add(nextTurnButton, c);
+
+				// Add selected block display
+				BlockDisplay display = new BlockDisplay((int) (boardWidth*0.5) / 2);
+				c = new GridBagConstraints();
+				c.gridx = 0;
+				c.gridy = 2;
+				add(display, c);
 			}
 
 			public void newGame()
