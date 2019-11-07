@@ -10,9 +10,9 @@ public class Game {
 	public static final int INVALID = 6;
 
 	public static final Color P1COLOR = Color.BLUE;
-	public static final Color P2COLOR = Color.RED;
-	public static final Color P3COLOR = Color.GREEN;
-	public static final Color P4COLOR = Color.YELLOW;
+	public static final Color P2COLOR = Color.YELLOW;
+	public static final Color P3COLOR = Color.RED;
+	public static final Color P4COLOR = Color.GREEN;
 	public static final Color NOCOLOR = Color.GRAY;
 
 	public int width = 20;

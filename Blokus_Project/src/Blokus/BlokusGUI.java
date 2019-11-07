@@ -367,14 +367,14 @@ public class BlokusGUI {
 				add(rightTray, c);
 				// Finished setting up opponent block pool displays
 
-				// Add button to cycle the inventories
-				JButton cycleButton = new JButton("Change Turn");
-				cycleButton.addActionListener(new cycleButtonListener());
+				// Add button to go to next turn
+				JButton nextTurnButton = new JButton("Next Turn");
+				nextTurnButton.addActionListener(new nextTurnButtonListener());
 				// cycleButton.setSize()
 				c = new GridBagConstraints();
-				c.gridx = 0;
+				c.gridx = 2;
 				c.gridy = 2;
-				add(cycleButton, c);
+				add(nextTurnButton, c);
 			}
 
 			public void newGame()
@@ -408,13 +408,13 @@ public class BlokusGUI {
 			public void cycleTrays()
 			{
 				BlockInventory temp = mainTray.getInventory();
-				mainTray.setInventory(rightTray.getInventory());
-				rightTray.setInventory(topTray.getInventory());
-				topTray.setInventory(leftTray.getInventory());
-				leftTray.setInventory(temp);
+				mainTray.setInventory(leftTray.getInventory());
+				leftTray.setInventory(topTray.getInventory());
+				topTray.setInventory(rightTray.getInventory());
+				rightTray.setInventory(temp);
 			}
 
-			private class cycleButtonListener implements ActionListener 
+			private class nextTurnButtonListener implements ActionListener 
 			{
 				public void actionPerformed(ActionEvent event) 
 				{

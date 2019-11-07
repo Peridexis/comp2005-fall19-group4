@@ -8,7 +8,7 @@ public class BlockTray extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	private static final int defaultSize = 500;
-	private Polyomino[][] defaultLayout =
+	private static final Polyomino[][] defaultLayout =
 	{
 		{ Polyomino.L5, Polyomino.L5, Polyomino.L5, Polyomino.L5, Polyomino.V5, Polyomino.V5, Polyomino.V5 },
 		{ Polyomino.P5, Polyomino.P5, Polyomino.O0, Polyomino.L5, Polyomino.T4, Polyomino.O0, Polyomino.V5 },
