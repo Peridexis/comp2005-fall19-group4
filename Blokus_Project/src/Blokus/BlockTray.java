@@ -90,7 +90,7 @@ public class BlockTray extends JPanel implements MouseListener
 					color = backgroundColor;
 				}
 
-				tile = new Tile(blockSize, color, edges);
+				tile = new Tile(blockSize, color, edges, poly);
 				tile.addMouseListener(this);
 				tiles[x][y] = tile;
 				polys[x][y] = poly;
@@ -136,7 +136,24 @@ public class BlockTray extends JPanel implements MouseListener
 	}
 
 	// Add MouseListener methods
-	public void mouseClicked(MouseEvent evnt){}
+	public void mouseClicked(MouseEvent evnt)
+	{
+		Tile tile = (Tile) evnt.getComponent();
+		Polyomino poly = tile.identity;
+
+		if (inventory.game.isSelected())
+		{
+			inventory.makeAvailable(inventory.game.selected);
+			inventory.game.deselect();
+		}
+		else if (inventory.isAvailable(poly))
+		{
+			inventory.makeUnavailable(poly);
+			inventory.game.selected = poly;
+		}
+
+		inventory.refreshGUI();
+	}
 	public void mouseEntered(MouseEvent evnt) {}
 	public void mouseExited(MouseEvent evnt) {}
 	public void mousePressed(MouseEvent evnt) {}

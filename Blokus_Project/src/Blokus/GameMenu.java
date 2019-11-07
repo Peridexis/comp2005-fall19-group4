@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 public class GameMenu extends JPanel
 {
 	private static final long serialVersionUID = -7887556954455476971L;
-	private Game game = new Game();
+	private Game game;
 	private JPanel boardPanel = new JPanel();
 	private BlockTray mainTray, leftTray, topTray, rightTray;
 	private BlockDisplay display;
@@ -19,8 +19,8 @@ public class GameMenu extends JPanel
 		setLayout(new GridBagLayout());
 
 		// Begin setting up board
-		board = new Tile[game.size][game.size];
-		boardPanel.setLayout(new GridLayout(game.size, game.size));
+		board = new Tile[Game.size][Game.size];
+		boardPanel.setLayout(new GridLayout(Game.size, Game.size));
 		GridBagConstraints c;
 		
 		c = new GridBagConstraints();
@@ -29,21 +29,19 @@ public class GameMenu extends JPanel
 		add(boardPanel, c);
 		Tile tile;
 
-		for (int y = 0; y < game.size; y++)
+		for (int y = 0; y < Game.size; y++)
 		{
-			for (int x = 0; x < game.size; x++)
+			for (int x = 0; x < Game.size; x++)
 			{
-				tile = new Tile(boardSize / game.size, Game.NOCOLOR);
+				tile = new Tile(boardSize / Game.size, Game.NOCOLOR);
 				boardPanel.add(tile);
 				board[x][y] = tile;
 			}
 		}
-
-		refreshBoard();
 		// Finished setting up board
 
 		// Set up active player block pool display
-		mainTray = new BlockTray(new BlockInventory(Game.P1COLOR, game), boardSize);
+		mainTray = new BlockTray(new BlockInventory(Game.P1COLOR), boardSize);
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 2;
@@ -51,21 +49,21 @@ public class GameMenu extends JPanel
 		add(mainTray, c);
 		
 		// Begin setting up opponent block pool displays
-		leftTray = new BlockTray(new BlockInventory(Game.P2COLOR, game), (int) (boardSize*0.7), 3);
+		leftTray = new BlockTray(new BlockInventory(Game.P2COLOR), (int) (boardSize*0.7), 3);
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weightx = c.weighty = 0.2;
 		add(leftTray, c);
 
-		topTray = new BlockTray(new BlockInventory(Game.P3COLOR, game), (int) (boardSize*0.7), 2);
+		topTray = new BlockTray(new BlockInventory(Game.P3COLOR), (int) (boardSize*0.7), 2);
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 0;
 		c.weightx = c.weighty = 0.2;
 		add(topTray, c);
 
-		rightTray = new BlockTray(new BlockInventory(Game.P4COLOR, game), (int) (boardSize*0.7), 1);
+		rightTray = new BlockTray(new BlockInventory(Game.P4COLOR), (int) (boardSize*0.7), 1);
 		c = new GridBagConstraints();
 		c.gridx = 2;
 		c.gridy = 1;
@@ -83,7 +81,7 @@ public class GameMenu extends JPanel
 		add(nextTurnButton, c);
 
 		// Add selected block display
-		BlockDisplay display = new BlockDisplay((int) (boardSize*0.5) / 2);
+		display = new BlockDisplay((int) (boardSize*0.5) / 2);
 		display.refresh();
 		c = new GridBagConstraints();
 		c.gridx = 0;
@@ -93,19 +91,23 @@ public class GameMenu extends JPanel
 
 	public void newGame()
 	{
-		setGame(new Game());
+		setGame(new Game(this));
 	}
 
 	public void setGame(Game game)
 	{
 		this.game = game;
+		mainTray.getInventory().game = game;
+		rightTray.getInventory().game = game;
+		topTray.getInventory().game = game;
+		leftTray.getInventory().game = game;
 	}
 
 	public void refreshBoard()
 	{
-		for (int y = 0; y < game.size; y++)
+		for (int y = 0; y < Game.size; y++)
 		{
-			for (int x = 0; x < game.size; x++)
+			for (int x = 0; x < Game.size; x++)
 			{
 				switch (game.getStateAt(x, y))
 				{
@@ -132,6 +134,13 @@ public class GameMenu extends JPanel
 	{
 		refreshBoard();
 		mainTray.refresh();
+		rightTray.refresh();
+		topTray.refresh();
+		leftTray.refresh();
+
+		display.setPolyomino(game.selected);
+		display.setColor(game.color);
+		display.refresh();
 	}
 
 	private class nextTurnButtonListener implements ActionListener 
@@ -139,6 +148,7 @@ public class GameMenu extends JPanel
 		public void actionPerformed(ActionEvent event) 
 		{
 			cycleTrays();
+			game.nextTurn();
 		}
 	}
 }
