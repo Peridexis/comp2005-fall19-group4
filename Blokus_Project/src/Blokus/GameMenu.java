@@ -73,20 +73,48 @@ public class GameMenu extends JPanel
 
 		// Add button to go to next turn
 		JButton nextTurnButton = new JButton("Next Turn");
-		nextTurnButton.addActionListener(new nextTurnButtonListener());
+		nextTurnButton.addActionListener(new NextTurnButtonListener());
 		// cycleButton.setSize()
 		c = new GridBagConstraints();
 		c.gridx = 2;
 		c.gridy = 2;
 		add(nextTurnButton, c);
 
-		// Add selected block display
-		display = new BlockDisplay((int) (boardSize*0.5) / 2);
-		display.refresh();
+		// Create a sub-panel to hold the block display and manipulation buttons
+		JPanel displayPanel = new JPanel();
+		displayPanel.setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 2;
-		add(display, c);
+		add(displayPanel, c);
+
+		// Add display for selected block
+		display = new BlockDisplay((int) (boardSize*0.5) / 2);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		displayPanel.add(display, c);
+
+		// Add button to rotate cw
+		JButton cwButton = new JButton("CW Rotate");
+		cwButton.addActionListener(new RotationButtonListner(true));
+		c.gridx = 0;
+		c.gridy = 1;
+		displayPanel.add(cwButton, c);
+
+		// Add button to rotate ccw
+		JButton ccwButton = new JButton("CCW Rotate");
+		ccwButton.addActionListener(new RotationButtonListner(false));
+		c.gridx = 0;
+		c.gridy = 2;
+		displayPanel.add(ccwButton, c);
+
+		// Add button to flip
+		JButton flipButton = new JButton("Flip");
+		flipButton.addActionListener(new FlipButtonListner());
+		c.gridx = 0;
+		c.gridy = 3;
+		displayPanel.add(flipButton, c);
 	}
 
 	public void newGame()
@@ -143,12 +171,30 @@ public class GameMenu extends JPanel
 		display.refresh();
 	}
 
-	private class nextTurnButtonListener implements ActionListener 
+	private class NextTurnButtonListener implements ActionListener 
 	{
-		public void actionPerformed(ActionEvent event) 
+		public void actionPerformed(ActionEvent evnt) 
 		{
 			cycleTrays();
 			game.nextTurn();
+		}
+	}
+
+	private class RotationButtonListner implements ActionListener
+	{
+		private boolean rotateCW = true;
+		public RotationButtonListner(boolean cw) { super(); rotateCW = cw; }
+		public void actionPerformed(ActionEvent evnt)
+		{
+			display.rotate(rotateCW ? 1 : 3);
+		}
+	}
+
+	private class FlipButtonListner implements ActionListener
+	{
+		public void actionPerformed(ActionEvent evnt)
+		{
+			display.flip();
 		}
 	}
 }
