@@ -84,9 +84,16 @@ public class BlockTray extends JPanel
 				c.gridx = x;
 				c.gridy = y;
 
-				// Set the color. Any empty tile will be background colored, but will 
-				// still be there (primarily for structure)
-				color = poly != Polyomino.O0 ? playerColor : backgroundColor;
+				// Set the color. Any empty or used tile will be background 
+				// colored, but will still be there (for structure)
+				if (poly != Polyomino.O0 && inventory.isAvailable(poly))
+				{
+					color = playerColor;
+				}
+				else
+				{
+					color = backgroundColor;
+				}
 
 				block = new Block(color, blockSize, edges, poly);
 				blocks[x][y] = block;
