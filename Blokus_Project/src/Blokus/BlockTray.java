@@ -4,26 +4,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-enum Polyomino 
-{
-	// Names from http://puzzler.sourceforge.net/docs/polyominoes-intro.html
-	// The letter roughly refers to the shape, and the number is how many tiles it uses
-
-	// The one free Monomino
-	O1,
-	// The one free Domino
-	I2,
-	// The two free Trominos
-	I3, V3,
-	// The five free Tertominos
-	I4, L4, O4, T4, Z4,
-	// The twelve free Pentominoes
-	F5, I5, L5, N5, P5, T5, U5, V5, W5, X5, Y5, Z5,
-
-	O0 // Empty tile value
-}
-
-
 public class BlockTray extends JPanel
 {
 	private static final long serialVersionUID = 1L;
@@ -49,9 +29,13 @@ public class BlockTray extends JPanel
 	private int width = 14;
 	private int height = 7;
 	private Block[][] blocks;
+	private BlockInventory inventory;
 
 	public BlockTray(BlockInventory inventory, int longEdgeSize, int quarterTurns)
 	{
+		setLayout(new GridBagLayout());
+		this.inventory = inventory;
+
 		// Create a temp copy of the default layout, so it can be rotated without issue
 		Polyomino[][] layout = defaultLayout;
 		for (int i = quarterTurns; i > 0; i--)
@@ -71,11 +55,9 @@ public class BlockTray extends JPanel
 			height = temp;
 		}
 
-		setLayout(new GridBagLayout());
-
 		// Define some variables for the loop to create the Blocks
 		GridBagConstraints c;
-		Color color = inventory.color, background = Game.NOCOLOR, blockColor;
+		Color color, playerColor = inventory.color, backgroundColor = Game.NOCOLOR;
 		Block block;
 		int blockSize = longEdgeSize / (quarterTurns % 2 == 0 ? width : height);
 		blocks = new Block[width][height];
@@ -104,9 +86,9 @@ public class BlockTray extends JPanel
 
 				// Set the color. Any empty tile will be background colored, but will 
 				// still be there (primarily for structure)
-				blockColor = poly != Polyomino.O0 ? color : background;
+				color = poly != Polyomino.O0 ? playerColor : backgroundColor;
 
-				block = new Block(blockColor, blockSize, edges, poly);
+				block = new Block(color, blockSize, edges, poly);
 				blocks[x][y] = block;
 				add(block, c);
 			}
