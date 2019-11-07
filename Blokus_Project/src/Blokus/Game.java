@@ -15,16 +15,15 @@ public class Game {
 	public static final Color P4COLOR = Color.GREEN;
 	public static final Color NOCOLOR = Color.GRAY;
 
-	public int width = 20;
-	public int height = 20;
+	public int size = 20;
 	private int[][] board;
 
 	public Game()
 	{
-		board = new int[width][height];
-		for (int x = 0; x < width; x++)
+		board = new int[size][size];
+		for (int x = 0; x < size; x++)
 		{
-			for (int y = 0; y < height; y++)
+			for (int y = 0; y < size; y++)
 			{
 				board[x][y] = NOPLAYER;
 			}
@@ -33,7 +32,7 @@ public class Game {
 
 	public int getStateAt(int x, int y)
 	{
-		if (x < 0 || y < 0 || x >= width || y >= height)
+		if (x < 0 || y < 0 || x >= size || y >= size)
 		{
 			return INVALID;
 		}

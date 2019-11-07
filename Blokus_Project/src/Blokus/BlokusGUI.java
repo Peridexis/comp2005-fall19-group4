@@ -302,32 +302,28 @@ public class BlokusGUI {
 			private JPanel boardPanel = new JPanel();
 			private BlockTray mainTray, leftTray, topTray, rightTray;
 			private Tile[][] board;
-			private int boardWidth = 400;
-			private int boardHeight = 400;
+			private int boardSize = 400;
 
 			public GameMenu()
 			{
 				super();
 
 				// Begin setting up board
-				board = new Tile[game.width][game.height];
-				boardPanel.setLayout(new GridLayout(game.width, game.height));
+				board = new Tile[game.size][game.size];
+				boardPanel.setLayout(new GridLayout(game.size, game.size));
 				GridBagConstraints c;
 				
 				c = new GridBagConstraints();
 				c.gridx = c.gridy = 1;
 				c.weightx = c.weighty = 0.2;
 				add(boardPanel, c);
-
-				int w = boardWidth / game.width;
-				int h = boardHeight / game.height;
 				Tile tile;
 
-				for (int y = 0; y < game.height; y++)
+				for (int y = 0; y < game.size; y++)
 				{
-					for (int x = 0; x < game.width; x++)
+					for (int x = 0; x < game.size; x++)
 					{
-						tile = new Tile(Game.NOCOLOR, w, new int[] {1, 1, 1, 1});
+						tile = new Tile(boardSize / game.size, Game.NOCOLOR);
 						boardPanel.add(tile);
 						board[x][y] = tile;
 					}
@@ -337,7 +333,7 @@ public class BlokusGUI {
 				// Finished setting up board
 
 				// Set up active player block pool display
-				mainTray = new BlockTray(new BlockInventory(Color.BLUE), boardWidth);
+				mainTray = new BlockTray(new BlockInventory(Color.BLUE), boardSize);
 				c = new GridBagConstraints();
 				c.gridx = 1;
 				c.gridy = 2;
@@ -345,21 +341,21 @@ public class BlokusGUI {
 				add(mainTray, c);
 				
 				// Begin setting up opponent block pool displays
-				leftTray = new BlockTray(new BlockInventory(Color.RED), (int) (boardWidth*0.7), 3);
+				leftTray = new BlockTray(new BlockInventory(Color.RED), (int) (boardSize*0.7), 3);
 				c = new GridBagConstraints();
 				c.gridx = 0;
 				c.gridy = 1;
 				c.weightx = c.weighty = 0.2;
 				add(leftTray, c);
 
-				topTray = new BlockTray(new BlockInventory(Color.YELLOW), (int) (boardWidth*0.7), 2);
+				topTray = new BlockTray(new BlockInventory(Color.YELLOW), (int) (boardSize*0.7), 2);
 				c = new GridBagConstraints();
 				c.gridx = 1;
 				c.gridy = 0;
 				c.weightx = c.weighty = 0.2;
 				add(topTray, c);
 
-				rightTray = new BlockTray(new BlockInventory(Color.GREEN), (int) (boardWidth*0.7), 1);
+				rightTray = new BlockTray(new BlockInventory(Color.GREEN), (int) (boardSize*0.7), 1);
 				c = new GridBagConstraints();
 				c.gridx = 2;
 				c.gridy = 1;
@@ -377,7 +373,8 @@ public class BlokusGUI {
 				add(nextTurnButton, c);
 
 				// Add selected block display
-				BlockDisplay display = new BlockDisplay((int) (boardWidth*0.5) / 2);
+				BlockDisplay display = new BlockDisplay((int) (boardSize*0.5) / 2);
+				display.refresh();
 				c = new GridBagConstraints();
 				c.gridx = 0;
 				c.gridy = 2;
@@ -396,9 +393,9 @@ public class BlokusGUI {
 
 			public void refreshBoard()
 			{
-				for (int y = 0; y < game.height; y++)
+				for (int y = 0; y < game.size; y++)
 				{
-					for (int x = 0; x < game.width; x++)
+					for (int x = 0; x < game.size; x++)
 					{
 						switch (game.getStateAt(x, y))
 						{

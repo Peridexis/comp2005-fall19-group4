@@ -1,10 +1,9 @@
 package Blokus;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-public class BlockTray extends JPanel
+public class BlockTray extends JPanel implements MouseListener
 {
 	private static final long serialVersionUID = 1L;
 	private static final int defaultSize = 500;
@@ -91,7 +90,8 @@ public class BlockTray extends JPanel
 					color = backgroundColor;
 				}
 
-				tile = new Tile(color, blockSize, edges);
+				tile = new Tile(blockSize, color, edges);
+				tile.addMouseListener(this);
 				tiles[x][y] = tile;
 				polys[x][y] = poly;
 				add(tile);
@@ -124,13 +124,21 @@ public class BlockTray extends JPanel
 				if (inventory.isAvailable(polys[x][y])
 				&&  polys[x][y] != Polyomino.O0)
 				{
-					tiles[x][y].setColor(playerColor);
+					tiles[x][y].color = playerColor;
 				}
 				else
 				{
-					tiles[x][y].setColor(backgroundColor);
+					tiles[x][y].color = backgroundColor;
 				}
+				tiles[x][y].refresh();
 			}
 		}
 	}
+
+	// Add MouseListener methods
+	public void mouseClicked(MouseEvent evnt){}
+	public void mouseEntered(MouseEvent evnt) {}
+	public void mouseExited(MouseEvent evnt) {}
+	public void mousePressed(MouseEvent evnt) {}
+	public void mouseReleased(MouseEvent evnt) {}
 }
