@@ -34,9 +34,6 @@ public class BlockTray extends JPanel
 
 	public BlockTray(BlockInventory inventory, int longEdgeSize, int quarterTurns)
 	{
-		setLayout(new GridBagLayout());
-		this.inventory = inventory;
-
 		// Create a temp copy of the default layout, so it can be rotated without issue
 		Polyomino[][] layout = defaultLayout;
 		for (int i = quarterTurns; i > 0; i--)
@@ -56,8 +53,10 @@ public class BlockTray extends JPanel
 			height = temp;
 		}
 
+		setLayout(new GridLayout(height, width));
+		this.inventory = inventory;
+
 		// Define some variables for the loop to create the Blocks
-		GridBagConstraints c;
 		Color color, playerColor = inventory.color, backgroundColor = Game.NOCOLOR;
 		Tile tile;
 		int blockSize = longEdgeSize / (quarterTurns % 2 == 0 ? width : height);
@@ -67,9 +66,9 @@ public class BlockTray extends JPanel
 		Polyomino poly;
 
 		// Create a Block for each space in the layout, and put it on the tray
-		for (int x = 0; x < width; x++)
+		for (int y = 0; y < height; y++)
 		{
-			for (int y = 0; y < height; y++)
+			for (int x = 0; x < width; x++)
 			{
 				// Get the type of polyomino at that grid location
 				poly = layout[x][y];
@@ -80,11 +79,6 @@ public class BlockTray extends JPanel
 				edges[1] = (x != 0        && poly == layout[x-1][y]) ? 0 : 1;
 				edges[2] = (y != height-1 && poly == layout[x][y+1]) ? 0 : 1;
 				edges[3] = (x != width-1  && poly == layout[x+1][y]) ? 0 : 1;
-
-				// Create the gridbagconstraints
-				c = new GridBagConstraints();
-				c.gridx = x;
-				c.gridy = y;
 
 				// Set the color. Any empty or used tile will be background 
 				// colored, but will still be there (for structure)
@@ -100,7 +94,7 @@ public class BlockTray extends JPanel
 				tile = new Tile(color, blockSize, edges);
 				tiles[x][y] = tile;
 				polys[x][y] = poly;
-				add(tile, c);
+				add(tile);
 			}
 		}
 	}
