@@ -327,7 +327,7 @@ public class BlokusGUI {
 				{
 					for (int x = 0; x < game.width; x++)
 					{
-						tile = new Tile(w, h, Game.NOCOLOR);
+						tile = new Tile(Game.NOCOLOR, w, new int[] {1, 1, 1, 1});
 						boardPanel.add(tile);
 						board[x][y] = tile;
 					}
@@ -419,19 +419,6 @@ public class BlokusGUI {
 				public void actionPerformed(ActionEvent event) 
 				{
 					cycleTrays();
-				}
-			}
-
-			private class Tile extends JPanel
-			{
-				private static final long serialVersionUID = 1092357066461006241L;
-
-				public Tile(int width, int height, Color color)
-				{
-					setSize(width, height);
-					setPreferredSize(new Dimension(width, height));
-					setBackground(color);
-					setBorder(BorderFactory.createLoweredBevelBorder());
 				}
 			}
 		}

@@ -28,7 +28,8 @@ public class BlockTray extends JPanel
 
 	private int width = 14;
 	private int height = 7;
-	private Block[][] blocks;
+	private Tile[][] tiles;
+	private Polyomino[][] polys;
 	private BlockInventory inventory;
 
 	public BlockTray(BlockInventory inventory, int longEdgeSize, int quarterTurns)
@@ -58,9 +59,10 @@ public class BlockTray extends JPanel
 		// Define some variables for the loop to create the Blocks
 		GridBagConstraints c;
 		Color color, playerColor = inventory.color, backgroundColor = Game.NOCOLOR;
-		Block block;
+		Tile tile;
 		int blockSize = longEdgeSize / (quarterTurns % 2 == 0 ? width : height);
-		blocks = new Block[width][height];
+		tiles = new Tile[width][height];
+		polys = new Polyomino[width][height];
 		int[] edges = new int[4];
 		Polyomino poly;
 
@@ -95,9 +97,10 @@ public class BlockTray extends JPanel
 					color = backgroundColor;
 				}
 
-				block = new Block(color, blockSize, edges, poly);
-				blocks[x][y] = block;
-				add(block, c);
+				tile = new Tile(color, blockSize, edges);
+				tiles[x][y] = tile;
+				polys[x][y] = poly;
+				add(tile, c);
 			}
 		}
 	}
@@ -124,43 +127,16 @@ public class BlockTray extends JPanel
 		{
 			for (int y = 0; y < height; y++)
 			{
-				if (inventory.isAvailable(blocks[x][y].poly)
-				&&  blocks[x][y].poly != Polyomino.O0)
+				if (inventory.isAvailable(polys[x][y])
+				&&  polys[x][y] != Polyomino.O0)
 				{
-					blocks[x][y].setColor(playerColor);
+					tiles[x][y].setColor(playerColor);
 				}
 				else
 				{
-					blocks[x][y].setColor(backgroundColor);
+					tiles[x][y].setColor(backgroundColor);
 				}
 			}
-		}
-	}
-
-	private class Block extends JPanel
-	{
-		private static final long serialVersionUID = 1L;
-		private int u, l, d, r;
-		private Polyomino poly;
-
-		public Block(Color color, int size, int[] edges, Polyomino poly)
-		{
-			setSize(size, size);
-			setPreferredSize(new Dimension(size, size));
-
-			u = edges[0];
-			l = edges[1];
-			d = edges[2];
-			r = edges[3];
-			this.poly = poly;
-
-			setColor(color);
-		}
-
-		public void setColor(Color color)
-		{
-			setBackground(color);
-			setBorder(BorderFactory.createMatteBorder(u, l, d, r, color.darker()));
 		}
 	}
 }
