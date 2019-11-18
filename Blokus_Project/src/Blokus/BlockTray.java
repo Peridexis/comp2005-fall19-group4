@@ -6,7 +6,6 @@ import java.awt.event.*;
 public class BlockTray extends JPanel implements MouseListener
 {
 	private static final long serialVersionUID = 1L;
-	private static final int defaultSize = 500;
 	private static final Polyomino[][] defaultLayout =
 	{
 		{ Polyomino.L5, Polyomino.L5, Polyomino.L5, Polyomino.L5, Polyomino.V5, Polyomino.V5, Polyomino.V5 },
@@ -31,7 +30,7 @@ public class BlockTray extends JPanel implements MouseListener
 	private Polyomino[][] polys;
 	private BlockInventory inventory;
 
-	public BlockTray(BlockInventory inventory, int longEdgeSize, int quarterTurns)
+	public BlockTray(BlockInventory inventory, int longEdgeSize, boolean isClickable, int quarterTurns)
 	{
 		// Create a temp copy of the default layout, so it can be rotated without issue
 		Polyomino[][] layout = defaultLayout;
@@ -91,7 +90,10 @@ public class BlockTray extends JPanel implements MouseListener
 				}
 
 				tile = new Tile(blockSize, color, edges, poly);
-				tile.addMouseListener(this);
+				if (isClickable)
+				{
+					tile.addMouseListener(this);
+				}
 				tiles[x][y] = tile;
 				polys[x][y] = poly;
 				add(tile);
@@ -99,8 +101,20 @@ public class BlockTray extends JPanel implements MouseListener
 		}
 	}
 
-	public BlockTray(BlockInventory inventory, int longEdgeSize) { this(inventory, longEdgeSize, 0); }
-	public BlockTray(BlockInventory inventory) { this(inventory, defaultSize, 0); }
+	public BlockTray(BlockInventory inventory, int longEdgeSize, boolean isClickable)
+	{
+		this(inventory, longEdgeSize, isClickable, 0);
+	}
+
+	public BlockTray(BlockInventory inventory, int longEdgeSize, int quarterTurns)
+	{
+		this(inventory, longEdgeSize, false, quarterTurns);
+	}
+
+	public BlockTray(BlockInventory inventory, int longEdgeSize)
+	{
+		this(inventory, longEdgeSize, false,0);
+	}
 
 	public void setInventory(BlockInventory inventory)
 	{

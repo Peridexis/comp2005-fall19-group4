@@ -41,7 +41,7 @@ public class GameMenu extends JPanel
 		// Finished setting up board
 
 		// Set up active player block pool display
-		mainTray = new BlockTray(new BlockInventory(Game.P1COLOR), boardSize);
+		mainTray = new BlockTray(new BlockInventory(Game.P1COLOR), boardSize, true);
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 2;
