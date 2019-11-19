@@ -36,7 +36,7 @@ public class BlockDisplay extends JPanel
 		int[][] target = game.getTranslatedSelected();
 		int[] edges = new int[4];
 		Tile tile;
-		Color color = Game.getColorFor(game.active);
+		Color color = Game.getColorFor(game.getActive());
 		for (int x = 0; x < 5; x++)
 		{
 			for (int y = 0; y < 5; y++)

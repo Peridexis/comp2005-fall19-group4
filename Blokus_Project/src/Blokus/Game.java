@@ -22,7 +22,7 @@ public class Game {
 	private Polyomino selected = Polyomino.O0;
 	private int cwRotations = 0;
 	private boolean flipped = false;
-	public int active = PLAYER1;
+	private int active = PLAYER1;
 	private RefreshListner refreshListner;
 
 	public Game()
@@ -151,4 +151,6 @@ public class Game {
 
 	public void setSelected(Polyomino poly) { selected = poly; }
 	public Polyomino getSelected() { return selected; }
+	public void setActive(int poly) { active = poly; }
+	public int getActive() { return active; }
 }

@@ -34,7 +34,7 @@ public class BoardGUI extends JPanel implements MouseListener
 	{
 		int state;
 		Color color;
-		Color activeColor = Game.getColorFor(game.active);
+		Color activeColor = Game.getColorFor(game.getActive());
 		for (int y = 0; y < Game.size; y++)
 		{
 			for (int x = 0; x < Game.size; x++)
