@@ -3,12 +3,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-public class GameMenu extends JPanel implements RefreshListener, NextTurnListener
+		
+public class GameMenu extends JPanel
 {
 	private static final long serialVersionUID = -7887556954455476971L;
-	private Game game = new Game();
-	private BoardGUI boardPanel;
+	private Game game;
+	private JPanel boardPanel = new JPanel();
 	private BlockTray mainTray, leftTray, topTray, rightTray;
 	private BlockDisplay display;
 	private Tile[][] board;
@@ -17,20 +17,31 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 	public GameMenu()
 	{
 		setLayout(new GridBagLayout());
-		GridBagConstraints c;
 
 		// Begin setting up board
-		boardPanel = new BoardGUI(boardSize, game);
-		boardPanel.addRefreshListener(this);
+		board = new Tile[Game.size][Game.size];
+		boardPanel.setLayout(new GridLayout(Game.size, Game.size));
+		GridBagConstraints c;
+		
 		c = new GridBagConstraints();
 		c.gridx = c.gridy = 1;
 		c.weightx = c.weighty = 0.2;
 		add(boardPanel, c);
+		Tile tile;
+
+		for (int y = 0; y < Game.size; y++)
+		{
+			for (int x = 0; x < Game.size; x++)
+			{
+				tile = new Tile(boardSize / Game.size, Game.NOCOLOR);
+				boardPanel.add(tile);
+				board[x][y] = tile;
+			}
+		}
 		// Finished setting up board
 
 		// Set up active player block pool display
-		mainTray = new BlockTray(new BlockInventory(Game.P1COLOR), boardSize, true);
-		mainTray.addRefreshListener(this);
+		mainTray = new BlockTray(new BlockInventory(Game.P1COLOR), boardSize);
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 2;
@@ -78,7 +89,7 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 		add(displayPanel, c);
 
 		// Add display for selected block
-		display = new BlockDisplay((int) (boardSize*0.5) / 2, game);
+		display = new BlockDisplay((int) (boardSize*0.5) / 2);
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -108,42 +119,55 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 
 	public void newGame()
 	{
-		setGame(new Game());
+		setGame(new Game(this));
 	}
 
 	public void setGame(Game game)
 	{
 		this.game = game;
-		game.addRefreshListener(this);
-		game.addNextTurnListener(this);
-		boardPanel.game = game;
 		mainTray.getInventory().game = game;
 		rightTray.getInventory().game = game;
 		topTray.getInventory().game = game;
 		leftTray.getInventory().game = game;
-		display.setGame(game);
 	}
 
-	public void nextTurn()
+	public void refreshBoard()
 	{
-		BlockInventory activeTray = mainTray.getInventory();
+		for (int y = 0; y < Game.size; y++)
+		{
+			for (int x = 0; x < Game.size; x++)
+			{
+				switch (game.getStateAt(x, y))
+				{
+					case Game.PLAYER1: board[x][y].setBackground(Game.P1COLOR); break;
+					case Game.PLAYER2: board[x][y].setBackground(Game.P2COLOR); break;
+					case Game.PLAYER3: board[x][y].setBackground(Game.P3COLOR); break;
+					case Game.PLAYER4: board[x][y].setBackground(Game.P4COLOR); break;
+					default: board[x][y].setBackground(Game.NOCOLOR);
+				}
+			}
+		}
+	}
+
+	public void cycleTrays()
+	{
+		BlockInventory temp = mainTray.getInventory();
 		mainTray.setInventory(leftTray.getInventory());
 		leftTray.setInventory(topTray.getInventory());
 		topTray.setInventory(rightTray.getInventory());
-		rightTray.setInventory(activeTray);
-
-		activeTray.makeUnavailable(game.getSelected());
-
-		game.nextTurn();
+		rightTray.setInventory(temp);
 	}
 
 	public void refresh()
 	{
-		boardPanel.refresh();
+		refreshBoard();
 		mainTray.refresh();
 		rightTray.refresh();
 		topTray.refresh();
 		leftTray.refresh();
+
+		display.setPolyomino(game.selected);
+		display.setColor(game.color);
 		display.refresh();
 	}
 
@@ -151,7 +175,8 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 	{
 		public void actionPerformed(ActionEvent evnt) 
 		{
-			nextTurn();
+			cycleTrays();
+			game.nextTurn();
 		}
 	}
 
@@ -161,7 +186,7 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 		public RotationButtonListner(boolean cw) { super(); rotateCW = cw; }
 		public void actionPerformed(ActionEvent evnt)
 		{
-			game.rotate(rotateCW ? 1 : 3);
+			display.rotate(rotateCW ? 1 : 3);
 		}
 	}
 
@@ -169,7 +194,7 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 	{
 		public void actionPerformed(ActionEvent evnt)
 		{
-			game.flip();
+			display.flip();
 		}
 	}
 }

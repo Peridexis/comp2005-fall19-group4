@@ -173,8 +173,8 @@ public enum Polyomino
 	Z5(new int[][] {
 		{0, 0, 0, 0, 0},
 		{0, 1, 1, 0, 0},
-		{0, 0, 1, 0, 0},
-		{0, 0, 1, 1, 0},
+		{0, 0, 1, 1, 1},
+		{0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0},
 	}),
 
@@ -194,38 +194,21 @@ public enum Polyomino
 		this.shape = shape;
 	}
 
-	public int[][] rotatedFlipped(int times, boolean isFlipped)
-	{
-		// Rotate the requested number of times
-		int[][] target = shape;
-		for (int i = times; i > 0; i--)
-		{
-			int[][] rotated = new int[5][5];
-			for (int x = 0; x < 5; x++) {
-				for (int y = 0; y < 5; y++) {
-					rotated[y][4-x] = target[x][y];
-				}
-			}
-			target = rotated;
-		}
-
-		// Flip it if needed
-		if (isFlipped)
-		{
-			int[][] flipped = new int[5][5];
-			for (int x = 0; x < 5; x++)
-			{
-				for (int y = 0; y < 5; y++)
-				{
-					flipped[x][y] = target[4-x][y];
-				}
-			}
-			target = flipped;
-		}
-
-		return target;
-	}
-
-	public int[][] rotated(int times) { return rotatedFlipped(times, false); }
-	public int[][] flipped() { return rotatedFlipped(0, true); }
+	// public static void main(String[] args)
+	// {
+	// 	for (Polyomino p : Polyomino.values())
+	// 	{
+	// 		System.out.println("Shape for "+p);
+	//
+	// 		for (int[] row : p.shape)
+	// 		{
+	// 			for (int i : row)
+	// 			{
+	// 				System.out.print(i+" ");
+	// 			}
+	// 			System.out.println("");
+	// 		}
+	// 		System.out.println("");
+	// 	}
+	// }
 }
