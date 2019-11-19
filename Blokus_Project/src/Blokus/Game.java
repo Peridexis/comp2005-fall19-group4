@@ -19,7 +19,7 @@ public class Game {
 
 	private int[][] board;
 	private boolean[][] hovering;
-	public Polyomino selected = Polyomino.O0;
+	private Polyomino selected = Polyomino.O0;
 	private int cwRotations = 0;
 	private boolean flipped = false;
 	public int active = PLAYER1;
@@ -148,4 +148,7 @@ public class Game {
 	{
 		refreshListner = lstn;
 	}
+
+	public void setSelected(Polyomino poly) { selected = poly; }
+	public Polyomino getSelected() { return selected; }
 }

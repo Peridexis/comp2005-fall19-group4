@@ -34,4 +34,19 @@ public class BlockInventory {
 		if (poly == Polyomino.O0) { return; }
 		available[poly.ordinal()] = true;
 	}
+
+	public boolean isSelected(Polyomino poly)
+	{
+		return game.isSelected(poly);
+	}
+
+	public void select(Polyomino poly)
+	{
+		game.setSelected(poly);
+	}
+
+	public void deselect()
+	{
+		game.deselect();
+	}
 }
