@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameMenu extends JPanel implements RefreshListner 
+public class GameMenu extends JPanel implements RefreshListner, NextTurnListener
 {
 	private static final long serialVersionUID = -7887556954455476971L;
 	private Game game = new Game();
@@ -115,6 +115,7 @@ public class GameMenu extends JPanel implements RefreshListner
 	{
 		this.game = game;
 		game.addRefreshListner(this);
+		game.addNextTurnListener(this);
 		boardPanel.game = game;
 		mainTray.getInventory().game = game;
 		rightTray.getInventory().game = game;
@@ -123,13 +124,15 @@ public class GameMenu extends JPanel implements RefreshListner
 		display.setGame(game);
 	}
 
-	public void cycleTrays()
+	public void nextTurn()
 	{
 		BlockInventory temp = mainTray.getInventory();
 		mainTray.setInventory(leftTray.getInventory());
 		leftTray.setInventory(topTray.getInventory());
 		topTray.setInventory(rightTray.getInventory());
 		rightTray.setInventory(temp);
+
+		game.nextTurn();
 	}
 
 	public void refresh()
@@ -146,8 +149,7 @@ public class GameMenu extends JPanel implements RefreshListner
 	{
 		public void actionPerformed(ActionEvent evnt) 
 		{
-			cycleTrays();
-			game.nextTurn();
+			nextTurn();
 		}
 	}
 

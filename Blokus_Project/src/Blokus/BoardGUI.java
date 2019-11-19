@@ -70,7 +70,14 @@ public class BoardGUI extends JPanel implements MouseListener
 	}
 
 	// Add MouseListener methods
-	public void mouseClicked(MouseEvent evnt) {}
+	public void mouseClicked(MouseEvent evnt)
+	{
+		Tile tile = (Tile) evnt.getComponent();
+		int[] coords = tile.getCoords();
+		game.place(coords[0], coords[1]);
+
+		refreshListner.refresh();
+	}
 	public void mouseEntered(MouseEvent evnt)
 	{
 		Tile tile = (Tile) evnt.getComponent();
