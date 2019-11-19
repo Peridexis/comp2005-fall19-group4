@@ -177,7 +177,11 @@ public class Game {
 				y = yLocation + yOffset - 2;
 
 				// Check if it's OOB
-				if (x > size || y > size) { return false; }
+				if (x < 0 || x > size 
+				||  y < 0 || y > size)
+				{
+					return false;
+				}
 
 				// Check if it's occupied
 				if (board[x][y] != NOPLAYER) { return false; }
