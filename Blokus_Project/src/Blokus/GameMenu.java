@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameMenu extends JPanel implements RefreshListner, NextTurnListener
+public class GameMenu extends JPanel implements RefreshListener, NextTurnListener
 {
 	private static final long serialVersionUID = -7887556954455476971L;
 	private Game game = new Game();
@@ -21,7 +21,7 @@ public class GameMenu extends JPanel implements RefreshListner, NextTurnListener
 
 		// Begin setting up board
 		boardPanel = new BoardGUI(boardSize, game);
-		boardPanel.addRefreshListner(this);
+		boardPanel.addRefreshListener(this);
 		c = new GridBagConstraints();
 		c.gridx = c.gridy = 1;
 		c.weightx = c.weighty = 0.2;
@@ -30,7 +30,7 @@ public class GameMenu extends JPanel implements RefreshListner, NextTurnListener
 
 		// Set up active player block pool display
 		mainTray = new BlockTray(new BlockInventory(Game.P1COLOR), boardSize, true);
-		mainTray.addRefreshListner(this);
+		mainTray.addRefreshListener(this);
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 2;
@@ -114,7 +114,7 @@ public class GameMenu extends JPanel implements RefreshListner, NextTurnListener
 	public void setGame(Game game)
 	{
 		this.game = game;
-		game.addRefreshListner(this);
+		game.addRefreshListener(this);
 		game.addNextTurnListener(this);
 		boardPanel.game = game;
 		mainTray.getInventory().game = game;

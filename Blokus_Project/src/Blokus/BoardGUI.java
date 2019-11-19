@@ -8,7 +8,7 @@ public class BoardGUI extends JPanel implements MouseListener
 	private static final long serialVersionUID = -7887556954455476971L;
 	private Tile[][] board;
 	public Game game;
-	private RefreshListner refreshListner;
+	private RefreshListener refreshListener;
 
 	public BoardGUI(int size, Game game)
 	{
@@ -64,9 +64,9 @@ public class BoardGUI extends JPanel implements MouseListener
 		return new Color(r, g, b, a);
 	}
 
-	public void addRefreshListner(RefreshListner lstn)
+	public void addRefreshListener(RefreshListener lstn)
 	{
-		refreshListner = lstn;
+		refreshListener = lstn;
 	}
 
 	// Add MouseListener methods
@@ -76,7 +76,7 @@ public class BoardGUI extends JPanel implements MouseListener
 		int[] coords = tile.getCoords();
 		game.place(coords[0], coords[1]);
 
-		refreshListner.refresh();
+		refreshListener.refresh();
 	}
 	public void mouseEntered(MouseEvent evnt)
 	{
@@ -84,7 +84,7 @@ public class BoardGUI extends JPanel implements MouseListener
 		int[] coords = tile.getCoords();
 		game.hoverSelectedAt(coords[0], coords[1]);
 
-		refreshListner.refresh();
+		refreshListener.refresh();
 	}
 	public void mouseExited(MouseEvent evnt) {}
 	public void mousePressed(MouseEvent evnt) {}

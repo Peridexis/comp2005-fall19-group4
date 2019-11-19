@@ -23,7 +23,7 @@ public class Game {
 	private int cwRotations = 0;
 	private boolean flipped = false;
 	private int active = PLAYER1;
-	private RefreshListner refreshListner;
+	private RefreshListener refreshListener;
 	private NextTurnListener nextTurnListener;
 
 	public Game()
@@ -237,18 +237,18 @@ public class Game {
 	{
 		cwRotations += times;
 		cwRotations %= 4;
-		refreshListner.refresh();
+		refreshListener.refresh();
 	}
 
 	public void flip()
 	{
 		flipped = !flipped;
-		refreshListner.refresh();
+		refreshListener.refresh();
 	}
 
-	public void addRefreshListner(RefreshListner lstn)
+	public void addRefreshListener(RefreshListener lstn)
 	{
-		refreshListner = lstn;
+		refreshListener = lstn;
 	}
 
 	public void addNextTurnListener(NextTurnListener lstn)

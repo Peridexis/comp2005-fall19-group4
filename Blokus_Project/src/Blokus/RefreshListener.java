@@ -1,6 +1,6 @@
 package Blokus;
 
-public interface RefreshListner
+public interface RefreshListener
 {
 	void refresh();
 }

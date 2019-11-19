@@ -29,7 +29,7 @@ public class BlockTray extends JPanel implements MouseListener
 	private Tile[][] tiles;
 	private Polyomino[][] polys;
 	private BlockInventory inventory;
-	private RefreshListner refreshListner;
+	private RefreshListener refreshListener;
 	private boolean isMain;
 
 	public BlockTray(BlockInventory inventory, int longEdgeSize, boolean isMain, int quarterTurns)
@@ -130,9 +130,9 @@ public class BlockTray extends JPanel implements MouseListener
 		return inventory;
 	}
 
-	public void addRefreshListner(RefreshListner lstn)
+	public void addRefreshListener(RefreshListener lstn)
 	{
-		refreshListner = lstn;
+		refreshListener = lstn;
 	}
 
 	public void refresh()
@@ -180,7 +180,7 @@ public class BlockTray extends JPanel implements MouseListener
 			inventory.deselect();
 		}
 
-		refreshListner.refresh();
+		refreshListener.refresh();
 	}
 	public void mouseEntered(MouseEvent evnt) {}
 	public void mouseExited(MouseEvent evnt) {}
