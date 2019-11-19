@@ -20,8 +20,11 @@ public class Game {
 	private int[][] board;
 	private boolean[][] hovering;
 	public Polyomino selected = Polyomino.O0;
+	private int cwRotations = 0;
+	private boolean flipped = false;
 	public Color color = P1COLOR;
 	public int active = PLAYER1;
+	private RefreshListner refreshListner;
 
 	public Game()
 	{
@@ -93,14 +96,9 @@ public class Game {
 		}
 	}
 
-	public void hoverOver(int x, int y)
+	public int[][] getTranslatedSelected()
 	{
-		hovering[x][y] = true;
-	}
-
-	public void stopHovering(int x, int y)
-	{
-		hovering[x][y] = false;
+		return selected.rotatedFlipped(cwRotations, flipped);
 	}
 
 	public boolean isHoveringOver(int x, int y)
@@ -111,29 +109,46 @@ public class Game {
 	public void hoverSelectedAt(int atX, int atY)
 	{
 		int polX, polY;
+		int[][] target = getTranslatedSelected();
 		for (int x = 0; x < size; x++)
 		{
 			for (int y = 0; y < size; y++)
 			{
-				if (Math.abs(atX - x) <= 2
-				&&  Math.abs(atY - y) <= 2)
+				hovering[x][y] = false;
+			}
+		}
+
+		for (int x = 0; x < 5; x++)
+		{
+			for (int y = 0; y < 5; y++)
+			{
+				polX = atX - 2 + x;
+				polY = atY - 2 + y;
+				if (target[x][y] == 1
+				&&  polX < size && polX >= 0 
+				&&  polY < size && polY >= 0)
 				{
-					polX = atX + 2 - x;
-					polY = atY + 2 - y;
-					if (selected.shape[polX][polY] == 1)
-					{
-						hoverOver(x, y);
-					}
-					else
-					{
-						stopHovering(x, y);
-					}
-				}
-				else
-				{
-					stopHovering(x, y);
+					hovering[polX][polY] = true;
 				}
 			}
 		}
+	}
+
+	public void rotate(int times)
+	{
+		cwRotations += times;
+		cwRotations %= 4;
+		refreshListner.refresh();
+	}
+
+	public void flip()
+	{
+		flipped = !flipped;
+		refreshListner.refresh();
+	}
+
+	public void addRefreshListner(RefreshListner lstn)
+	{
+		refreshListner = lstn;
 	}
 }

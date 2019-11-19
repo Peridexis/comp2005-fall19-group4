@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 public class GameMenu extends JPanel implements RefreshListner 
 {
 	private static final long serialVersionUID = -7887556954455476971L;
-	private Game game;
+	private Game game = new Game();
 	private BoardGUI boardPanel;
 	private BlockTray mainTray, leftTray, topTray, rightTray;
 	private BlockDisplay display;
@@ -78,7 +78,7 @@ public class GameMenu extends JPanel implements RefreshListner
 		add(displayPanel, c);
 
 		// Add display for selected block
-		display = new BlockDisplay((int) (boardSize*0.5) / 2);
+		display = new BlockDisplay((int) (boardSize*0.5) / 2, game);
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -114,11 +114,13 @@ public class GameMenu extends JPanel implements RefreshListner
 	public void setGame(Game game)
 	{
 		this.game = game;
+		game.addRefreshListner(this);
 		boardPanel.game = game;
 		mainTray.getInventory().game = game;
 		rightTray.getInventory().game = game;
 		topTray.getInventory().game = game;
 		leftTray.getInventory().game = game;
+		display.setGame(game);
 	}
 
 	public void cycleTrays()
@@ -158,7 +160,7 @@ public class GameMenu extends JPanel implements RefreshListner
 		public RotationButtonListner(boolean cw) { super(); rotateCW = cw; }
 		public void actionPerformed(ActionEvent evnt)
 		{
-			display.rotate(rotateCW ? 1 : 3);
+			game.rotate(rotateCW ? 1 : 3);
 		}
 	}
 
@@ -166,7 +168,7 @@ public class GameMenu extends JPanel implements RefreshListner
 	{
 		public void actionPerformed(ActionEvent evnt)
 		{
-			display.flip();
+			game.flip();
 		}
 	}
 }
