@@ -126,11 +126,13 @@ public class GameMenu extends JPanel implements RefreshListner, NextTurnListener
 
 	public void nextTurn()
 	{
-		BlockInventory temp = mainTray.getInventory();
+		BlockInventory activeTray = mainTray.getInventory();
 		mainTray.setInventory(leftTray.getInventory());
 		leftTray.setInventory(topTray.getInventory());
 		topTray.setInventory(rightTray.getInventory());
-		rightTray.setInventory(temp);
+		rightTray.setInventory(activeTray);
+
+		activeTray.makeUnavailable(game.getSelected());
 
 		game.nextTurn();
 	}
