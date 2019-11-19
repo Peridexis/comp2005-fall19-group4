@@ -62,6 +62,11 @@ public class Game {
 		}
 	}
 
+	public Color getActiveColor()
+	{
+		return getColorFor(active);
+	}
+
 	public int getStateAt(int x, int y)
 	{
 		if (x < 0 || y < 0 || x >= size || y >= size)
