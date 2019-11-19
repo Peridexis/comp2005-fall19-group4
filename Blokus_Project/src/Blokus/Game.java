@@ -19,13 +19,11 @@ public class Game {
 
 	private int[][] board;
 	public Polyomino selected = Polyomino.O0;
-	private GameMenu gui;
 	public Color color = P1COLOR;
 	public int active = PLAYER1;
 
-	public Game(GameMenu gui)
+	public Game()
 	{
-		this.gui = gui;
 		board = new int[size][size];
 		for (int x = 0; x < size; x++)
 		{
@@ -60,11 +58,6 @@ public class Game {
 	public void deselect()
 	{
 		selected = Polyomino.O0;
-	}
-
-	public void refreshGUI()
-	{
-		gui.refresh();
 	}
 
 	public void nextTurn()

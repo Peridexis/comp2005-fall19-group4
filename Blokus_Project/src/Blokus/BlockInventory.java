@@ -34,9 +34,4 @@ public class BlockInventory {
 		if (poly == Polyomino.O0) { return; }
 		available[poly.ordinal()] = true;
 	}
-
-	public void refreshGUI()
-	{
-		game.refreshGUI();
-	}
 }

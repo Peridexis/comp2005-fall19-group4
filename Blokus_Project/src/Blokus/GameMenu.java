@@ -3,8 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-		
-public class GameMenu extends JPanel
+
+public class GameMenu extends JPanel implements RefreshListner 
 {
 	private static final long serialVersionUID = -7887556954455476971L;
 	private Game game;
@@ -29,6 +29,7 @@ public class GameMenu extends JPanel
 
 		// Set up active player block pool display
 		mainTray = new BlockTray(new BlockInventory(Game.P1COLOR), boardSize, true);
+		mainTray.addRefreshListner(this);
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 2;
@@ -106,7 +107,7 @@ public class GameMenu extends JPanel
 
 	public void newGame()
 	{
-		setGame(new Game(this));
+		setGame(new Game());
 	}
 
 	public void setGame(Game game)

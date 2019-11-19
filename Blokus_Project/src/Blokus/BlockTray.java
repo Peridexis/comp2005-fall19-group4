@@ -29,6 +29,7 @@ public class BlockTray extends JPanel implements MouseListener
 	private Tile[][] tiles;
 	private Polyomino[][] polys;
 	private BlockInventory inventory;
+	private RefreshListner refreshListner;
 
 	public BlockTray(BlockInventory inventory, int longEdgeSize, boolean isClickable, int quarterTurns)
 	{
@@ -127,6 +128,11 @@ public class BlockTray extends JPanel implements MouseListener
 		return inventory;
 	}
 
+	public void addRefreshListner(RefreshListner lstn)
+	{
+		refreshListner = lstn;
+	}
+
 	public void refresh()
 	{
 		Color playerColor = inventory.color;
@@ -166,7 +172,7 @@ public class BlockTray extends JPanel implements MouseListener
 			inventory.game.selected = poly;
 		}
 
-		inventory.refreshGUI();
+		refreshListner.refresh();
 	}
 	public void mouseEntered(MouseEvent evnt) {}
 	public void mouseExited(MouseEvent evnt) {}
