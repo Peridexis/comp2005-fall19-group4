@@ -8,7 +8,7 @@ public class GameMenu extends JPanel
 {
 	private static final long serialVersionUID = -7887556954455476971L;
 	private Game game;
-	private JPanel boardPanel = new JPanel();
+	private BoardGUI boardPanel;
 	private BlockTray mainTray, leftTray, topTray, rightTray;
 	private BlockDisplay display;
 	private Tile[][] board;
@@ -17,27 +17,14 @@ public class GameMenu extends JPanel
 	public GameMenu()
 	{
 		setLayout(new GridBagLayout());
+		GridBagConstraints c;
 
 		// Begin setting up board
-		board = new Tile[Game.size][Game.size];
-		boardPanel.setLayout(new GridLayout(Game.size, Game.size));
-		GridBagConstraints c;
-		
+		boardPanel = new BoardGUI(boardSize, game);
 		c = new GridBagConstraints();
 		c.gridx = c.gridy = 1;
 		c.weightx = c.weighty = 0.2;
 		add(boardPanel, c);
-		Tile tile;
-
-		for (int y = 0; y < Game.size; y++)
-		{
-			for (int x = 0; x < Game.size; x++)
-			{
-				tile = new Tile(boardSize / Game.size, Game.NOCOLOR);
-				boardPanel.add(tile);
-				board[x][y] = tile;
-			}
-		}
 		// Finished setting up board
 
 		// Set up active player block pool display
@@ -125,28 +112,11 @@ public class GameMenu extends JPanel
 	public void setGame(Game game)
 	{
 		this.game = game;
+		boardPanel.game = game;
 		mainTray.getInventory().game = game;
 		rightTray.getInventory().game = game;
 		topTray.getInventory().game = game;
 		leftTray.getInventory().game = game;
-	}
-
-	public void refreshBoard()
-	{
-		for (int y = 0; y < Game.size; y++)
-		{
-			for (int x = 0; x < Game.size; x++)
-			{
-				switch (game.getStateAt(x, y))
-				{
-					case Game.PLAYER1: board[x][y].setBackground(Game.P1COLOR); break;
-					case Game.PLAYER2: board[x][y].setBackground(Game.P2COLOR); break;
-					case Game.PLAYER3: board[x][y].setBackground(Game.P3COLOR); break;
-					case Game.PLAYER4: board[x][y].setBackground(Game.P4COLOR); break;
-					default: board[x][y].setBackground(Game.NOCOLOR);
-				}
-			}
-		}
 	}
 
 	public void cycleTrays()
@@ -160,7 +130,7 @@ public class GameMenu extends JPanel
 
 	public void refresh()
 	{
-		refreshBoard();
+		boardPanel.refresh();
 		mainTray.refresh();
 		rightTray.refresh();
 		topTray.refresh();
