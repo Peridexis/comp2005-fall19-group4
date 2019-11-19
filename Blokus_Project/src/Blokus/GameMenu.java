@@ -139,9 +139,6 @@ public class GameMenu extends JPanel implements RefreshListner
 		rightTray.refresh();
 		topTray.refresh();
 		leftTray.refresh();
-
-		display.setPolyomino(game.selected);
-		display.setColor(game.color);
 		display.refresh();
 	}
 

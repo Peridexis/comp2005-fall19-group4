@@ -22,7 +22,6 @@ public class Game {
 	public Polyomino selected = Polyomino.O0;
 	private int cwRotations = 0;
 	private boolean flipped = false;
-	public Color color = P1COLOR;
 	public int active = PLAYER1;
 	private RefreshListner refreshListner;
 
@@ -48,6 +47,18 @@ public class Game {
 			case PLAYER3: return P3COLOR;
 			case PLAYER4: return P4COLOR;
 			default: return NOCOLOR;
+		}
+	}
+
+	public static int getNextPlayer(int player)
+	{
+		switch (player)
+		{
+			case PLAYER1: return PLAYER2;
+			case PLAYER2: return PLAYER3;
+			case PLAYER3: return PLAYER4;
+			case PLAYER4: return PLAYER1;
+			default: return NOPLAYER;
 		}
 	}
 
@@ -79,21 +90,7 @@ public class Game {
 
 	public void nextTurn()
 	{
-		switch (active)
-		{
-			case PLAYER1:	active = PLAYER2;
-							color = P2COLOR;
-							break;
-			case PLAYER2:	active = PLAYER3;
-							color = P3COLOR;
-							break;
-			case PLAYER3:	active = PLAYER4;
-							color = P4COLOR;
-							break;
-			case PLAYER4:	active = PLAYER1;
-							color = P1COLOR;
-							break;
-		}
+		active = getNextPlayer(active);
 	}
 
 	public int[][] getTranslatedSelected()

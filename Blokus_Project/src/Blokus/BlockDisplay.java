@@ -9,8 +9,6 @@ public class BlockDisplay extends JPanel
 	private static final long serialVersionUID = 1L;
 	private static final Color bgColor = Game.NOCOLOR;
 
-	private Polyomino selected = Polyomino.O0;
-	private Color color = Game.NOCOLOR;
 	private Tile[][] grid = new Tile[5][5];
 	private Game game;
 
@@ -33,23 +31,12 @@ public class BlockDisplay extends JPanel
 		}
 	}
 
-	public void setPolyomino(Polyomino poly)
-	{
-		selected = poly;
-		refresh();
-	}
-
-	public void setColor(Color color)
-	{
-		this.color = color;
-		refresh();
-	}
-
 	public void refresh()
 	{
 		int[][] target = game.getTranslatedSelected();
 		int[] edges = new int[4];
 		Tile tile;
+		Color color = Game.getColorFor(game.active);
 		for (int x = 0; x < 5; x++)
 		{
 			for (int y = 0; y < 5; y++)
