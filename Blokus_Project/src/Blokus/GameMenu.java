@@ -21,6 +21,7 @@ public class GameMenu extends JPanel implements RefreshListner
 
 		// Begin setting up board
 		boardPanel = new BoardGUI(boardSize, game);
+		boardPanel.addRefreshListner(this);
 		c = new GridBagConstraints();
 		c.gridx = c.gridy = 1;
 		c.weightx = c.weighty = 0.2;

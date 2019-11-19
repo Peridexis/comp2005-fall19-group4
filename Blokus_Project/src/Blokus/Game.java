@@ -18,12 +18,14 @@ public class Game {
 	public static final int size = 20;
 
 	private int[][] board;
+	private boolean[][] hovering;
 	public Polyomino selected = Polyomino.O0;
 	public Color color = P1COLOR;
 	public int active = PLAYER1;
 
 	public Game()
 	{
+		hovering = new boolean[size][size];
 		board = new int[size][size];
 		for (int x = 0; x < size; x++)
 		{
@@ -31,6 +33,18 @@ public class Game {
 			{
 				board[x][y] = NOPLAYER;
 			}
+		}
+	}
+
+	public static Color getColorFor(int player) 
+	{
+		switch (player)
+		{
+			case PLAYER1: return P1COLOR;
+			case PLAYER2: return P2COLOR;
+			case PLAYER3: return P3COLOR;
+			case PLAYER4: return P4COLOR;
+			default: return NOCOLOR;
 		}
 	}
 
@@ -76,6 +90,50 @@ public class Game {
 			case PLAYER4:	active = PLAYER1;
 							color = P1COLOR;
 							break;
+		}
+	}
+
+	public void hoverOver(int x, int y)
+	{
+		hovering[x][y] = true;
+	}
+
+	public void stopHovering(int x, int y)
+	{
+		hovering[x][y] = false;
+	}
+
+	public boolean isHoveringOver(int x, int y)
+	{
+		return hovering[x][y];
+	}
+
+	public void hoverSelectedAt(int atX, int atY)
+	{
+		int polX, polY;
+		for (int x = 0; x < size; x++)
+		{
+			for (int y = 0; y < size; y++)
+			{
+				if (Math.abs(atX - x) <= 2
+				&&  Math.abs(atY - y) <= 2)
+				{
+					polX = atX + 2 - x;
+					polY = atY + 2 - y;
+					if (selected.shape[polX][polY] == 1)
+					{
+						hoverOver(x, y);
+					}
+					else
+					{
+						stopHovering(x, y);
+					}
+				}
+				else
+				{
+					stopHovering(x, y);
+				}
+			}
 		}
 	}
 }
