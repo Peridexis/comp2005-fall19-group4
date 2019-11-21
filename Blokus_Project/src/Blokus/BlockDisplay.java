@@ -9,14 +9,12 @@ public class BlockDisplay extends JPanel
 	private static final long serialVersionUID = 1L;
 	private static final Color bgColor = Game.NOCOLOR;
 
-	private Polyomino selected = Polyomino.O0;
-	private Color color = Game.NOCOLOR;
 	private Tile[][] grid = new Tile[5][5];
-	private int cwRotations = 0;
-	private boolean flipped = false;
+	private Game game;
 
-	public BlockDisplay(int size)
+	public BlockDisplay(int size, Game game)
 	{
+		this.game = game;
 		setLayout(new GridLayout(5, 5));
 		setSize(size, size);
 		setPreferredSize(new Dimension(size, size));
@@ -33,108 +31,22 @@ public class BlockDisplay extends JPanel
 		}
 	}
 
-	public void setPolyomino(Polyomino poly)
-	{
-		selected = poly;
-		refresh();
-	}
-
-	public void setColor(Color color)
-	{
-		this.color = color;
-		refresh();
-	}
-
-	public void setRotations(int rotations)
-	{
-		cwRotations = rotations;
-		refresh();
-	}
-
-	public void rotate(int times)
-	{
-		cwRotations = getCwRotations() + times;
-		cwRotations = getCwRotations() % 4;
-		refresh();
-	}
-
-	public void flip()
-	{
-		flipped = !isFlipped();
-		refresh();
-	}
-
 	public void refresh()
 	{
-		// Create a copy of the Polyomino's shape, and rotate 
-		// 90 degrees clockwise it the correct number of times
-		int[][] target = getSelected().shape;
-		for (int i = getCwRotations(); i > 0; i--)
-		{
-			int[][] rotated = new int[5][5];
-			for (int x = 0; x < 5; x++) {
-				for (int y = 0; y < 5; y++) {
-					rotated[y][4-x] = target[x][y];
-				}
-			}
-			target = rotated;
-		}
-
-		// Flip it if needed
-		if (isFlipped())
-		{
-			int[][] flipped = new int[5][5];
-			for (int x = 0; x < 5; x++)
-			{
-				for (int y = 0; y < 5; y++)
-				{
-					flipped[x][y] = target[4-x][y];
-				}
-			}
-			target = flipped;
-		}
-
+		int[][] target = game.getTranslatedSelected();
 		int[] edges = new int[4];
 		Tile tile;
+		Color color = game.getActiveColor();
 		for (int x = 0; x < 5; x++)
 		{
 			for (int y = 0; y < 5; y++)
 			{
 				tile = grid[x][y];
-				if (target[x][y] == 0)
-				{
-					tile.u = tile.l = tile.d = tile.r = 1;
-				}
-				else
-				{
-					tile.u = (y != 0 && target[x][y] == target[x][y-1]) ? 0 : 1;
-					tile.l = (x != 0 && target[x][y] == target[x-1][y]) ? 0 : 1;
-					tile.d = (y != 4 && target[x][y] == target[x][y+1]) ? 0 : 1;
-					tile.r = (x != 4 && target[x][y] == target[x+1][y]) ? 0 : 1;
-				}
-
-				tile.color = (target[x][y] == 1) ? getColor() : bgColor;
-
+				tile.color = (target[x][y] == 1) ? color : bgColor;
 				tile.refresh();
 			}
 		}
 	}
 
-	public Polyomino getSelected() {
-		return selected;
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public int getCwRotations() {
-		return cwRotations;
-	}
-
-	public boolean isFlipped() {
-		return flipped;
-	}
-
-
+	public void setGame(Game game) { this.game = game; }
 }

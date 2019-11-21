@@ -10,6 +10,7 @@ public class Tile extends JPanel
 	public int u = 1, l = 1, d = 1, r = 1;
 	public Color color = Game.NOCOLOR;
 	public Polyomino identity = Polyomino.O0;
+	private int[] coords;
 
 	public Tile(int size)
 	{
@@ -51,5 +52,15 @@ public class Tile extends JPanel
 	{
 		setBackground(color);
 		setBorder(BorderFactory.createMatteBorder(u, l, d, r, color.darker()));
+	}
+
+	public void setCoords(int x, int y)
+	{
+		coords = new int[] {x, y};
+	}
+
+	public int[] getCoords()
+	{
+		return coords;
 	}
 }
