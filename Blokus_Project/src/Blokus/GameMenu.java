@@ -9,15 +9,19 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 	private static final long serialVersionUID = -7887556954455476971L;
 	private Game game = new Game();
 	private BoardGUI boardPanel;
+	private JPanel scorePanel;
+	JPanel displayPanel;
 	private BlockTray mainTray, leftTray, topTray, rightTray;
 	private BlockDisplay display;
 	private Tile[][] board;
 	private int boardSize = 400;
+	private GridBagConstraints c;
+
 
 	public GameMenu()
 	{
 		setLayout(new GridBagLayout());
-		GridBagConstraints c;
+//		GridBagConstraints c;
 
 		// Begin setting up board
 		boardPanel = new BoardGUI(boardSize, game);
@@ -70,7 +74,7 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 		add(nextTurnButton, c);
 
 		// Create a sub-panel to hold the block display and manipulation buttons
-		JPanel displayPanel = new JPanel();
+		displayPanel = new JPanel();
 		displayPanel.setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
 		c.gridx = 0;
@@ -104,11 +108,27 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 		c.gridx = 0;
 		c.gridy = 3;
 		displayPanel.add(flipButton, c);
+
+		setupScorePanel();
 	}
 
 	public void newGame()
 	{
 		setGame(new Game());
+	}
+
+	public void setupScorePanel(){
+		JPanel topRightPanel = new JPanel();
+		scorePanel = new JPanel(new GridLayout(2,2));
+		c = new GridBagConstraints();
+
+		c.gridx = 3;
+		c.gridy = 0;
+		topRightPanel.setSize(new Dimension(100,100));
+		topRightPanel.setBackground(new Color(20,80,56));
+		topRightPanel.add(scorePanel);
+		add(topRightPanel,c);
+
 	}
 
 	public void setGame(Game game)
@@ -145,6 +165,7 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 		topTray.refresh();
 		leftTray.refresh();
 		display.refresh();
+
 	}
 
 	private class NextTurnButtonListener implements ActionListener 
@@ -172,4 +193,6 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 			game.flip();
 		}
 	}
+
+
 }
