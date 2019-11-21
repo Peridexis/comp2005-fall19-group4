@@ -260,6 +260,22 @@ public class Game {
 		nextTurnListener = lstn;
 	}
 
+	public int getScore(int player)
+	{
+		int count = 0;
+		for (int[] row : board)
+		{
+			for (int cell : row)
+			{
+				if (cell == player)
+				{
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+
 	public void setSelected(Polyomino poly) { selected = poly; }
 	public Polyomino getSelected() { return selected; }
 	public void setActive(int poly) { active = poly; }
