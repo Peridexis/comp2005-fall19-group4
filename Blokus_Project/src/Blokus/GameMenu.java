@@ -11,6 +11,7 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 	private BoardGUI boardPanel;
 	private BlockTray mainTray, leftTray, topTray, rightTray;
 	private BlockDisplay display;
+	private Scoreboard scoreboard;
 	private Tile[][] board;
 	private int boardSize = 400;
 
@@ -104,6 +105,14 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 		c.gridx = 0;
 		c.gridy = 3;
 		displayPanel.add(flipButton, c);
+		// Finished making display for selected block and associated buttons
+
+		// Set up the scoreboard
+		scoreboard = new Scoreboard(game, boardSize/2);
+		c = new GridBagConstraints();
+		c.gridx = 2;
+		c.gridy = 0;
+		add(scoreboard, c);
 	}
 
 	public void newGame()
@@ -122,6 +131,7 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 		topTray.getInventory().game = game;
 		leftTray.getInventory().game = game;
 		display.setGame(game);
+		scoreboard.setGame(game);
 	}
 
 	public void nextTurn()
@@ -145,6 +155,7 @@ public class GameMenu extends JPanel implements RefreshListener, NextTurnListene
 		topTray.refresh();
 		leftTray.refresh();
 		display.refresh();
+		scoreboard.refresh();
 	}
 
 	private class NextTurnButtonListener implements ActionListener 
