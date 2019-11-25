@@ -1,5 +1,6 @@
 package Blokus;
 import java.awt.Color;
+import java.util.Arrays;
 
 public class Game {
 	public static final int PLAYER1 = 1;
@@ -166,6 +167,7 @@ public class Game {
 		int[][] diagDirs = {{1, 1}, {-1, -1}, {-1, 1}, {1, -1}};
 		int x, y, xDir, yDir;
 		boolean foundCorner = false;
+		int s = size-1; 
 		for (int xOffset = 0; xOffset < 5; xOffset++)
 		{
 			for (int yOffset = 0; yOffset < 5; yOffset++)
@@ -225,11 +227,12 @@ public class Game {
 				}
 
 				// Check for valid starting corners too
-				if ((x == 0 || x == size - 1)
-				&&  (y == 0 || y == size - 1))
+				if (((x == s && y == s) && active == PLAYER1)
+				||  ((x == 0 && y == s) && active == PLAYER2)
+				||  ((x == 0 && y == 0) && active == PLAYER3)
+				||  ((x == s && y == 0) && active == PLAYER4))
 				{
-					foundCorner = true; 
-					// TODO this should allow each player one starting corner
+					foundCorner = true;
 				}
 			}
 		}
